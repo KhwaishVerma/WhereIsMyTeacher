@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MAD Project</string>
+    <string name="heading">Where is My Teacher?</string>
+    <string name="subheading">Find your teacher. Anytime.</string>
+    <string name="username">Enter email/SAP ID</string>
+    <string name="password">Enter password</string>
+    <string name="sub1">forgot password?</string>
+    <string name="b1">Log In</string>
+    <string name="sub2">Do not have an account?</string>
+    <string name="b2">Register here</string>
+</resources>
