@@ -39,4 +39,22 @@
     <string name="s18">e.g. Faculty Area | Room-2 | A Block</string>
     <string name="s19">Employee ID</string>
     <string name="s20">Enter Employee ID</string>
+    <string name="welcome">Hello, Khwaish!</string>
+    <string name="department">Computer Engineering</string>
+    <string name="find_teacher">Find Your Teacher</string>
+    <string name="search_teacher">Search teacher...</string>
+    <string name="quick_access">QUICK ACCESS</string>
+    <string name="find_teacher_button">Find Teacher</string>
+    <string name="my_requests">My Requests</string>
+    <string name="favourite_teachers">MY FAVOURITE TEACHERS</string>
+    <string name="teacher1">Dr. Sharma</string>
+    <string name="subject1">Data Structures</string>
+    <string name="room1">AB-204</string>
+    <string name="available1">Available until 11:00 AM</string>
+    <string name="teacher2">Prof. Mehta</string>
+    <string name="subject2">Operating Systems</string>
+    <string name="leave2">On Leave Today</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="requests">Requests</string>
 </resources>

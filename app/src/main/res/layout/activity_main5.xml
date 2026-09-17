@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textViewWelcome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/welcome"
+                android:textSize="11pt" />
+
+            <TextView
+                android:id="@+id/textViewDepartment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/department"
+                android:textSize="10pt" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <TextView
+                android:id="@+id/textViewFind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/find_teacher"
+                android:textSize="11pt" />
+
+            <EditText
+                android:id="@+id/editTextSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/search_teacher"
+                android:inputType="text" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
+
+            <TextView
+                android:id="@+id/textViewQuick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/quick_access"
+                android:textSize="10pt" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonFindTeacher"
+                    android:layout_width="171dp"
+                    android:layout_height="77dp"
+                    android:text="@string/find_teacher_button"
+                    android:textSize="9pt" />
+
+                <Space
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/buttonRequests"
+                    android:layout_width="183dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/my_requests"
+                    android:textSize="9pt" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/textViewFavourite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/favourite_teachers"
+                android:textSize="10pt" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <LinearLayout
+                android:id="@+id/teacherCard1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/textViewTeacher1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/teacher1"
+                    android:textSize="10pt" />
+
+                <TextView
+                    android:id="@+id/textViewSubject1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subject1"
+                    android:textSize="10pt" />
+
+                <TextView
+                    android:id="@+id/textViewRoom1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/room1"
+                    android:textSize="10pt" />
+
+                <TextView
+                    android:id="@+id/textViewAvailable1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/available1"
+                    android:textSize="10pt" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
+
+            <LinearLayout
+                android:id="@+id/teacherCard2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/textViewTeacher2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/teacher2"
+                    android:textSize="10pt" />
+
+                <TextView
+                    android:id="@+id/textViewSubject2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subject2"
+                    android:textSize="10pt" />
+
+                <TextView
+                    android:id="@+id/textViewLeave2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/leave2"
+                    android:textSize="10pt" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="30dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonHome"
+                    android:layout_width="121dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home"
+                    android:textSize="7pt" />
+
+                <Button
+                    android:id="@+id/buttonSearch"
+                    android:layout_width="126dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search"
+                    android:textSize="7pt" />
+
+                <Button
+                    android:id="@+id/buttonRequest"
+                    android:layout_width="125dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/requests"
+                    android:textSize="7pt" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
