@@ -6,6 +6,8 @@
     <string name="password">Enter password</string>
     <string name="sub1">forgot password?</string>
     <string name="b1">Log In</string>
+    <string name="b11">Log In Student</string>
+    <string name="b111">Log In Teacher</string>
     <string name="sub2">Do not have an account?</string>
     <string name="b2">Register here</string>
     <string name="s1">Create Account</string>
@@ -91,4 +93,26 @@
     <string name="next_location">Room 305</string>
     <string name="next_time">11:00 AM</string>
     <string name="full_timetable">View Full Timetable</string>
+
+    <string name="a1">Request Meeting</string>
+    <string name="a2">Select Date of Meeting</string>
+    <string name="a3">Continue</string>
+    <string name="a4">Enter subject for Meeting</string>
+    <string name="a5">18 September 2026</string>
+    <string name="a6"> My Requests</string>
+    <string name="a7">PENDING</string>
+    <string name="a8">CONFIRMED</string>
+
+    <!-- Student Requests -->
+    <string name="pending_teacher">Dr. Sharma</string>
+    <string name="pending_date">   18 Sept</string>
+    <string name="pending_time">   3:00 - 3:15 PM</string>
+    <string name="pending_status">   Waiting for response</string>
+
+    <string name="confirmed_teacher">Dr. Dhanare</string>
+    <string name="confirmed_date">   19 Sept</string>
+    <string name="confirmed_time">   11:00 - 11:15 AM</string>
+    <string name="confirmed_location">   Faculty Area</string>
+    <string name="confirmed_status">   Confirmed</string>
+
 </resources>
