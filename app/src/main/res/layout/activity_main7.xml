@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F7F7F7"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    tools:context=".teacher_availability">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="30dp">
+
+        <TextView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="‹ Back"
+            android:textColor="#111111"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp" />
+
+        <TextView
+            android:id="@+id/textViewTeacherName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Dr. Sharma"
+            android:textColor="#111111"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewTeacherDepartment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Computer Engineering"
+            android:textColor="#555555"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="#D0D0D0" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Weekly Availability"
+            android:textColor="#111111"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="View when this teacher is available during the week."
+            android:textColor="#666666"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mondayTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Monday"
+            android:textColor="#111111"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/mondayAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/mondaySlot1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="09:00 AM - 10:00 AM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+            <TextView
+                android:id="@+id/mondaySlot3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="12:00 PM - 01:00 PM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+
+            <TextView
+                android:id="@+id/mondaySlot5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="03:00 PM - 04:00 PM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tuesdayTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Tuesday"
+            android:textColor="#111111"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/tuesdayAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+
+
+            <TextView
+                android:id="@+id/tuesdaySlot2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10:00 AM - 11:00 AM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+
+            <TextView
+                android:id="@+id/tuesdaySlot4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="01:00 PM - 03:00 PM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/wednesdayTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Wednesday"
+            android:textColor="#111111"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/wednesdayAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/wednesdaySlot1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="09:00 AM - 11:00 AM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+
+            <TextView
+                android:id="@+id/wednesdaySlot3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="01:00 PM - 02:00 PM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/thursdayTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Thursday"
+            android:textColor="#111111"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/thursdayAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+
+
+            <TextView
+                android:id="@+id/thursdaySlot2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10:00 AM - 12:00 PM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+            <TextView
+                android:id="@+id/thursdaySlot4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="02:00 PM - 04:00 PM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/fridayTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Friday"
+            android:textColor="#111111"
+            android:textSize="19sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/fridayAvailability"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/fridaySlot1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="09:00 AM - 10:00 AM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+
+            <TextView
+                android:id="@+id/fridaySlot3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="12:00 PM - 01:00 PM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+
+            <TextView
+                android:id="@+id/fridaySlot5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="03:00 PM - 04:00 PM    AVAILABLE"
+                android:textColor="#222222"
+                android:textSize="15sp"
+                android:padding="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

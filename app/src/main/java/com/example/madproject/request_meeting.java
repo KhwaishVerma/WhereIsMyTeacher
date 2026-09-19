@@ -1,7 +1,9 @@
 package com.example.madproject;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +17,7 @@ import java.util.Calendar;
 public class request_meeting extends AppCompatActivity {
 
     private TextView dateTextView;
+    private Button buttonMeetingTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +27,9 @@ public class request_meeting extends AppCompatActivity {
 
         setContentView(R.layout.activity_request_meeting);
 
-        // Find views AFTER setContentView()
         dateTextView = findViewById(R.id.dateTextView);
+        buttonMeetingTime = findViewById(R.id.buttonMeetingTime);
 
-        // Handle system bars
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.main),
                 (v, insets) -> {
@@ -46,7 +48,6 @@ public class request_meeting extends AppCompatActivity {
                 }
         );
 
-        // Open Date Picker when date TextView is clicked
         dateTextView.setOnClickListener(v -> {
 
             Calendar calendar = Calendar.getInstance();
@@ -75,6 +76,52 @@ public class request_meeting extends AppCompatActivity {
                     );
 
             datePickerDialog.show();
+        });
+
+        buttonMeetingTime.setOnClickListener(v -> {
+
+            Calendar calendar = Calendar.getInstance();
+
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+
+            TimePickerDialog timePickerDialog =
+                    new TimePickerDialog(
+                            request_meeting.this,
+
+                            (view, selectedHour, selectedMinute) -> {
+
+                                String amPm;
+
+                                if (selectedHour >= 12) {
+                                    amPm = "PM";
+                                } else {
+                                    amPm = "AM";
+                                }
+
+                                int displayHour = selectedHour % 12;
+
+                                if (displayHour == 0) {
+                                    displayHour = 12;
+                                }
+
+                                String selectedTime =
+                                        String.format(
+                                                "%02d:%02d %s",
+                                                displayHour,
+                                                selectedMinute,
+                                                amPm
+                                        );
+
+                                buttonMeetingTime.setText(selectedTime);
+                            },
+
+                            hour,
+                            minute,
+                            false
+                    );
+
+            timePickerDialog.show();
         });
     }
 }

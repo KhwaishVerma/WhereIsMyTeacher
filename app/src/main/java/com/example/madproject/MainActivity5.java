@@ -35,7 +35,8 @@ public class MainActivity5 extends AppCompatActivity {
         myrequests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i=new Intent(MainActivity5.this, student_requests.class);
+                startActivity(i);
             }
         });
     }
