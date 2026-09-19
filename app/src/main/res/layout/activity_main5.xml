@@ -40,25 +40,6 @@
                 android:layout_height="20dp" />
 
             <TextView
-                android:id="@+id/textViewFind"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/find_teacher"
-                android:textSize="11pt" />
-
-            <EditText
-                android:id="@+id/editTextSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/search_teacher"
-                android:inputType="text" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="25dp" />
-
-            <TextView
                 android:id="@+id/textViewQuick"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,7 +68,7 @@
                     android:layout_height="wrap_content" />
 
                 <Button
-                    android:id="@+id/MyRequests"
+                    android:id="@+id/buttonMyRequests"
                     android:layout_width="183dp"
                     android:layout_height="match_parent"
                     android:text="@string/my_requests"
