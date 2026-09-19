@@ -32,5 +32,12 @@ public class MainActivity6 extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        availability.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(MainActivity6.this, MainActivity7.class);
+                startActivity(i);
+            }
+        });
     }
 }
