@@ -1,184 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7F7F7"
+    android:fillViewport="true"
+    android:scrollbars="none"
     tools:context=".student_requests">
 
-    <ScrollView
-        android:id="@+id/requestsScrollView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:scrollbars="none"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="22dp"
+        android:paddingBottom="30dp">
+
+        <TextView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/a6"
+            android:textColor="#111111"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/a7"
+            android:textColor="#222222"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:layout_marginTop="38dp"
+            android:layout_marginBottom="14dp" />
 
         <LinearLayout
+            android:id="@+id/pendingCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:paddingTop="22dp"
-            android:paddingBottom="30dp">
+            android:padding="22dp"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
 
-            <!-- Header -->
             <TextView
-                android:id="@+id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/a6"
-                android:textColor="#111111"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"
-                android:padding="4dp" />
-
-            <!-- PENDING -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/a7"
-                android:textColor="#222222"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:layout_marginTop="38dp"
-                android:layout_marginBottom="14dp" />
-
-            <!-- Pending Card -->
-            <LinearLayout
-                android:id="@+id/pendingCard"
+                android:id="@+id/pendingTeacher"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="22dp"
-                android:elevation="2dp">
-
-                <!-- Teacher -->
-                <TextView
-                    android:id="@+id/pendingTeacher"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pending_teacher"
-                    android:textColor="#222222"
-                    android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Date -->
-                <TextView
-                    android:id="@+id/pendingDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pending_date"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Time -->
-                <TextView
-                    android:id="@+id/pendingTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pending_time"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="22dp" />
-
-                <!-- Status -->
-                <TextView
-                    android:id="@+id/pendingStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/pending_status"
-                    android:textColor="#333333"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
-            <!-- CONFIRMED -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/a8"
+                android:text="@string/pending_teacher"
                 android:textColor="#222222"
-                android:textSize="17sp"
+                android:textSize="19sp"
                 android:textStyle="bold"
-                android:layout_marginTop="42dp"
-                android:layout_marginBottom="14dp" />
+                android:layout_marginBottom="16dp" />
 
-            <!-- Confirmed Card -->
-            <LinearLayout
-                android:id="@+id/confirmedCard"
+            <TextView
+                android:id="@+id/pendingDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="22dp"
-                android:elevation="2dp">
+                android:text="@string/pending_date"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_marginBottom="12dp" />
 
-                <!-- Teacher -->
-                <TextView
-                    android:id="@+id/confirmedTeacher"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/confirmed_teacher"
-                    android:textColor="#222222"
-                    android:textSize="19sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
+            <TextView
+                android:id="@+id/pendingTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pending_time"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_marginBottom="22dp" />
 
-                <!-- Date -->
-                <TextView
-                    android:id="@+id/confirmedDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/confirmed_date"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Time -->
-                <TextView
-                    android:id="@+id/confirmedTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/confirmed_time"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Location -->
-                <TextView
-                    android:id="@+id/confirmedLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/confirmed_location"
-                    android:textColor="#333333"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="22dp" />
-
-                <!-- Status -->
-                <TextView
-                    android:id="@+id/confirmedStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/confirmed_status"
-                    android:textColor="#333333"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/pendingStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pending_status"
+                android:textColor="#FF0000"
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/a8"
+            android:textColor="#222222"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:layout_marginTop="42dp"
+            android:layout_marginBottom="14dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/confirmedCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="22dp"
+            android:background="#FFFFFF"
+            android:elevation="2dp">
+
+            <TextView
+                android:id="@+id/confirmedTeacher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirmed_teacher"
+                android:textColor="#222222"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:id="@+id/confirmedDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirmed_date"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/confirmedTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirmed_time"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/confirmedLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirmed_location"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:layout_marginBottom="22dp" />
+
+            <TextView
+                android:id="@+id/confirmedStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirmed_status"
+                android:textColor="#07CC07"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
