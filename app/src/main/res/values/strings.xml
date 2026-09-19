@@ -64,12 +64,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
     <string name="menu_transform">Transform</string>
     <string name="menu_reflow">Reflow</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="menu_settings">Settings</string>
-
     <string name="lorem_ipsum_title">Lorem Ipsum"</string>
     <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
         typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
@@ -80,4 +78,17 @@
     <string name="image_view_item_transform_content_description">Represents an image view in the
         item
     </string>
+    <string name="student_welcome">WHERE IS MY TEACHER?</string>
+    <string name="search_label">Search teacher</string>
+    <string name="search_hint">Search teacher...</string>
+    <string name="currently">CURRENTLY</string>
+    <string name="teacher_name">Dr. Sharma</string>
+    <string name="subject">Data Structures</string>
+    <string name="location">Lab 3</string>
+    <string name="current_time">10:00 – 11:00 AM</string>
+    <string name="next">NEXT</string>
+    <string name="next_subject">CN</string>
+    <string name="next_location">Room 305</string>
+    <string name="next_time">11:00 AM</string>
+    <string name="full_timetable">View Full Timetable</string>
 </resources>
