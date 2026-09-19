@@ -1,157 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
     tools:context=".MainActivity3">
 
-    <ScrollView
-        android:layout_width="290dp"
-        android:layout_height="500dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="35dp"
+        android:paddingBottom="35dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:text="@string/s4"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="35dp" />
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/s5"
-                android:textSize="10pt" />
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s5"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextText3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/name"
-                android:inputType="text" />
+        <EditText
+            android:id="@+id/editTextText3"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="@string/name"
+            android:inputType="text"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp" />
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/s6"
-                android:textSize="10pt" />
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s6"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextText4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/sap"
-                android:inputType="text" />
+        <EditText
+            android:id="@+id/editTextText4"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="@string/sap"
+            android:inputType="number"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp" />
 
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/s7"
-                android:textSize="10pt" />
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s7"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextText5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/email"
-                android:inputType="text" />
+        <EditText
+            android:id="@+id/editTextText5"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp" />
 
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/s8"
-                android:textSize="10pt" />
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s8"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextText6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/dept"
-                android:inputType="text" />
+        <Spinner
+            android:id="@+id/editTextText6"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/s11"
-                android:textSize="10pt" />
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s11"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextText7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/year"
-                android:inputType="text" />
+        <Spinner
+            android:id="@+id/editTextText7"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/s9"
-                android:textSize="10pt" />
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s9"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextText8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/passwd"
-                android:inputType="text" />
+        <EditText
+            android:id="@+id/editTextText8"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="@string/passwd"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp" />
 
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/s10"
-                android:textSize="10pt" />
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s10"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextText9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/confpasswd"
-                android:inputType="text" />
+        <EditText
+            android:id="@+id/editTextText9"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="@string/confpasswd"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="30dp" />
 
-        </LinearLayout>
-    </ScrollView>
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="@string/b6"
+            android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/s4"
-        android:textSize="16pt"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="290dp"
-        android:layout_height="wrap_content"
-        android:text="@string/b6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.960" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

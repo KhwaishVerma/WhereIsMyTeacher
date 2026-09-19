@@ -1,377 +1,360 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
     android:background="#F7F8FA"
     tools:context=".MainActivity6">
 
-    <ScrollView
-        android:id="@+id/mainScrollView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <LinearLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="35dp">
 
-        <LinearLayout
-            android:id="@+id/mainContainer"
+        <TextView
+            android:id="@+id/textViewHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingStart="20dp"
-            android:paddingTop="20dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="35dp">
+            android:text="@string/student_welcome"
+            android:textColor="#202124"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/search_label"
+            android:textColor="#202124"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <AutoCompleteTextView
+            android:id="@+id/editTextSearchTeacher"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:drawable/editbox_background"
+            android:completionThreshold="1"
+            android:hint="@string/search_hint"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:singleLine="true"
+            android:textColor="#202124"
+            android:textColorHint="#777777"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/teacherContentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewHeading"
+                android:id="@+id/textViewTeacherName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/student_welcome"
+                android:layout_marginTop="30dp"
+                android:text="@string/teacher_name"
                 android:textColor="#202124"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textViewSearch"
+                android:id="@+id/textViewTeacherDepartment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="@string/search_label"
-                android:textColor="#202124"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <AutoCompleteTextView
-                android:id="@+id/editTextSearchTeacher"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="8dp"
-                android:background="@android:drawable/editbox_background"
-                android:hint="@string/search_hint"
-                android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:singleLine="true"
-                android:textColor="#202124"
-                android:textColorHint="#777777"
-                android:textSize="14sp"
-                android:inputType="text"
-                android:completionThreshold="1" />
+                android:layout_marginTop="5dp"
+                android:text="@string/department"
+                android:textColor="#666666"
+                android:textSize="14sp" />
 
             <LinearLayout
-                android:id="@+id/teacherContentContainer"
+                android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="22dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/availabilityButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Check full Week's Availability"
+                    android:textAllCaps="false"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewCurrently"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="AVAILABLE TODAY"
+                android:textColor="#202124"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/currentStatusCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#FFFFFF"
+                android:elevation="3dp"
+                android:orientation="vertical"
+                android:padding="18dp">
 
                 <TextView
-                    android:id="@+id/textViewTeacherName"
+                    android:id="@+id/textViewCurrentStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="@string/teacher_name"
+                    android:text="AVAILABLE"
                     android:textColor="#202124"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewTeacherDepartment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/department"
-                    android:textColor="#666666"
-                    android:textSize="14sp" />
-
-                <LinearLayout
-                    android:id="@+id/tabLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="22dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/availabilityButton"
-                        android:layout_width="0dp"
-                        android:layout_height="46dp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp"
-                        android:text="Availability"
-                        android:textAllCaps="false"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/textViewCurrently"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="28dp"
-                    android:text="AVAILABLE TODAY"
-                    android:textColor="#202124"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:id="@+id/currentStatusCard"
+                    android:id="@+id/textViewLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:background="#FFFFFF"
-                    android:elevation="3dp"
-                    android:orientation="vertical"
-                    android:padding="18dp">
-
-                    <TextView
-                        android:id="@+id/textViewCurrentStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="AVAILABLE"
-                        android:textColor="#202124"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/textViewLocation"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="@string/location"
-                        android:textColor="#555B65"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/textViewCurrentTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Until 12:00 PM"
-                        android:textColor="#555B65"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
+                    android:text="@string/location"
+                    android:textColor="#555B65"
+                    android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/textViewToday"
+                    android:id="@+id/textViewCurrentTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="TODAY"
-                    android:textColor="#202124"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:id="@+id/teacherScheduleContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/time0900"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="22dp"
-                        android:text="09:00  ─────────────────────"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/subject0900"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/subject1"
-                        android:textColor="#202124"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/location0900"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:paddingStart="5dp"
-                        android:text="@string/room1"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/time1000"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="22dp"
-                        android:text="10:00  ─────────────────────"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/subject1000"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:paddingStart="5dp"
-                        android:text="Computer Networks"
-                        android:textColor="#202124"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/location1000"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:paddingStart="5dp"
-                        android:text="Lab 3"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/time1100"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="22dp"
-                        android:text="11:00  ─────────────────────"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/status1100"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:paddingStart="5dp"
-                        android:text="AVAILABLE"
-                        android:textColor="#202124"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/location1100"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:paddingStart="5dp"
-                        android:text="Faculty Area"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/until1100"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:paddingStart="5dp"
-                        android:text="Until 12:00 PM"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/time1200"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="22dp"
-                        android:text="12:00  ─────────────────────"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/status1200"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:paddingStart="5dp"
-                        android:text="BREAK"
-                        android:textColor="#202124"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/time0100"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="22dp"
-                        android:text="01:00  ─────────────────────"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/status0100"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:paddingStart="5dp"
-                        android:text="MEETING"
-                        android:textColor="#202124"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/location0100"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:paddingStart="5dp"
-                        android:text="Conference Room"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/time0200"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="22dp"
-                        android:text="02:00  ─────────────────────"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/status0200"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:paddingStart="5dp"
-                        android:text="AVAILABLE"
-                        android:textColor="#202124"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/location0200"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:paddingStart="5dp"
-                        android:text="Faculty Area"
-                        android:textColor="#555B65"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/buttonFullTimetable"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="30dp"
-                    android:text="REQUEST MEETING"
-                    android:textAllCaps="false"
+                    android:layout_marginTop="12dp"
+                    android:text="Until 12:00 PM"
+                    android:textColor="#555B65"
                     android:textSize="14sp" />
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textViewToday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="TODAY"
+                android:textColor="#202124"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/teacherScheduleContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/time0900"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="09:00  ─────────────────────"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/subject0900"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/subject1"
+                    android:textColor="#202124"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/location0900"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="5dp"
+                    android:text="@string/room1"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/time1000"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="10:00  ─────────────────────"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/subject1000"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:paddingStart="5dp"
+                    android:text="Computer Networks"
+                    android:textColor="#202124"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/location1000"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="5dp"
+                    android:text="Lab 3"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/time1100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="11:00  ─────────────────────"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/status1100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:paddingStart="5dp"
+                    android:text="AVAILABLE"
+                    android:textColor="#202124"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/location1100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="5dp"
+                    android:text="Faculty Area"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/until1100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="5dp"
+                    android:text="Until 12:00 PM"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/time1200"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="12:00  ─────────────────────"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/status1200"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:paddingStart="5dp"
+                    android:text="BREAK"
+                    android:textColor="#202124"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/time0100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="01:00  ─────────────────────"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/status0100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:paddingStart="5dp"
+                    android:text="MEETING"
+                    android:textColor="#202124"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/location0100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="5dp"
+                    android:text="Conference Room"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/time0200"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="02:00  ─────────────────────"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/status0200"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:paddingStart="5dp"
+                    android:text="AVAILABLE"
+                    android:textColor="#202124"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/location0200"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingStart="5dp"
+                    android:text="Faculty Area"
+                    android:textColor="#555B65"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonRequestMeeting"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="30dp"
+                android:text="REQUEST MEETING"
+                android:textAllCaps="false"
+                android:textSize="14sp" />
+
         </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

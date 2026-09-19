@@ -6,14 +6,12 @@
     <string name="password">Enter password</string>
     <string name="sub1">forgot password?</string>
     <string name="b1">Log In</string>
-    <string name="b11">Log In Student</string>
-    <string name="b111">Log In Teacher</string>
     <string name="sub2">Do not have an account?</string>
     <string name="b2">Register here</string>
     <string name="s1">Create Account</string>
     <string name="s2">Who are you?</string>
-    <string name="b3">STUDENT Find Teachers and request meetings</string>
-    <string name="b4">TEACHER Manage schedule and availability</string>
+    <string name="b3">STUDENT \nFind Teachers and request meetings</string>
+    <string name="b4">TEACHER \nManage schedule and availability</string>
     <string name="s3">Already Registered?</string>
     <string name="b5">Login</string>
     <string name="s4">Student Registration</string>
