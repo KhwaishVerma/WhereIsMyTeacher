@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content" />
 
                 <Button
-                    android:id="@+id/buttonRequests"
+                    android:id="@+id/MyRequests"
                     android:layout_width="183dp"
                     android:layout_height="match_parent"
                     android:text="@string/my_requests"
