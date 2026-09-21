@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity5">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,11 +19,15 @@
         android:paddingTop="35dp"
         android:paddingBottom="35dp">
 
+        <!-- ============================================== -->
+        <!-- STUDENT PROFILE -->
+        <!-- ============================================== -->
+
         <TextView
             android:id="@+id/textViewWelcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/welcome"
+            android:text="@string/loading"
             android:textSize="26sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp" />
@@ -30,9 +36,14 @@
             android:id="@+id/textViewDepartment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/department"
+            android:text="@string/loading"
             android:textSize="17sp"
             android:layout_marginBottom="30dp" />
+
+
+        <!-- ============================================== -->
+        <!-- QUICK ACCESS -->
+        <!-- ============================================== -->
 
         <TextView
             android:id="@+id/textViewQuick"
@@ -71,6 +82,11 @@
 
         </LinearLayout>
 
+
+        <!-- ============================================== -->
+        <!-- FAVOURITE TEACHERS -->
+        <!-- ============================================== -->
+
         <TextView
             android:id="@+id/textViewFavourite"
             android:layout_width="match_parent"
@@ -80,6 +96,11 @@
             android:textStyle="bold"
             android:layout_marginTop="35dp"
             android:layout_marginBottom="15dp" />
+
+
+        <!-- ============================================== -->
+        <!-- TEACHER CARD 1 -->
+        <!-- ============================================== -->
 
         <LinearLayout
             android:id="@+id/teacherCard1"
@@ -122,6 +143,11 @@
                 android:textSize="15sp" />
 
         </LinearLayout>
+
+
+        <!-- ============================================== -->
+        <!-- TEACHER CARD 2 -->
+        <!-- ============================================== -->
 
         <LinearLayout
             android:id="@+id/teacherCard2"

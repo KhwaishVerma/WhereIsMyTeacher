@@ -1,6 +1,6 @@
 package com.example.madproject;
+
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -32,7 +32,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -48,11 +47,9 @@ public class upload_tt extends AppCompatActivity {
 
     private Button uploadButton;
     private Button importButton;
-    private Button downloadButton;
 
     private TextView fileNameText;
     private TextView statusText;
-    private TextView jsonText;
 
     private TableLayout tableLayout;
     private ProgressBar progressBar;
@@ -78,7 +75,10 @@ public class upload_tt extends AppCompatActivity {
 
 
     // =========================================================
-    // JSON
+    // INTERNAL JSON
+    //
+    // This is NOT displayed or downloaded.
+    // It will be used later for Firebase/Firestore.
     // =========================================================
 
     private JSONObject finalJson;
@@ -127,14 +127,6 @@ public class upload_tt extends AppCompatActivity {
 
                         finalJson = null;
 
-                        jsonText.setText(
-                                "JSON output will appear here..."
-                        );
-
-                        downloadButton.setEnabled(
-                                false
-                        );
-
 
                         if (
                                 selectedFileType.equals("CSV")
@@ -167,39 +159,6 @@ public class upload_tt extends AppCompatActivity {
 
 
     // =========================================================
-    // SAVE JSON
-    // =========================================================
-
-    private final ActivityResultLauncher<Intent> saveJsonLauncher =
-            registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-
-                        if (
-                                result.getResultCode()
-                                        != RESULT_OK
-                                        ||
-                                        result.getData() == null
-                        ) {
-
-                            return;
-                        }
-
-
-                        Uri uri =
-                                result.getData()
-                                        .getData();
-
-
-                        if (uri != null) {
-
-                            saveJson(uri);
-                        }
-                    }
-            );
-
-
-    // =========================================================
     // ON CREATE
     // =========================================================
 
@@ -213,6 +172,9 @@ public class upload_tt extends AppCompatActivity {
                 savedInstanceState
         );
 
+
+        // IMPORTANT:
+        // This must match activity_upload_tt.xml
         setContentView(
                 R.layout.activity_upload_tt
         );
@@ -232,11 +194,6 @@ public class upload_tt extends AppCompatActivity {
                         R.id.ocrButton
                 );
 
-        downloadButton =
-                findViewById(
-                        R.id.downloadButton
-                );
-
         fileNameText =
                 findViewById(
                         R.id.fileNameText
@@ -245,11 +202,6 @@ public class upload_tt extends AppCompatActivity {
         statusText =
                 findViewById(
                         R.id.statusText
-                );
-
-        jsonText =
-                findViewById(
-                        R.id.jsonText
                 );
 
         tableLayout =
@@ -263,11 +215,11 @@ public class upload_tt extends AppCompatActivity {
                 );
 
 
-        importButton.setEnabled(
-                false
-        );
+        // -----------------------------------------------------
+        // Initial State
+        // -----------------------------------------------------
 
-        downloadButton.setEnabled(
+        importButton.setEnabled(
                 false
         );
 
@@ -313,49 +265,6 @@ public class upload_tt extends AppCompatActivity {
                     importFile();
                 }
         );
-
-
-        // -----------------------------------------------------
-        // Export JSON
-        // -----------------------------------------------------
-
-        downloadButton.setOnClickListener(
-                v -> {
-
-                    if (finalJson == null) {
-
-                        Toast.makeText(
-                                this,
-                                "Import a timetable first.",
-                                Toast.LENGTH_SHORT
-                        ).show();
-
-                        return;
-                    }
-
-
-                    Intent intent =
-                            new Intent(
-                                    Intent.ACTION_CREATE_DOCUMENT
-                            );
-
-
-                    intent.setType(
-                            "application/json"
-                    );
-
-
-                    intent.putExtra(
-                            Intent.EXTRA_TITLE,
-                            "timetable.json"
-                    );
-
-
-                    saveJsonLauncher.launch(
-                            intent
-                    );
-                }
-        );
     }
 
 
@@ -366,10 +275,6 @@ public class upload_tt extends AppCompatActivity {
     private void importFile() {
 
         importButton.setEnabled(
-                false
-        );
-
-        downloadButton.setEnabled(
                 false
         );
 
@@ -759,7 +664,7 @@ public class upload_tt extends AppCompatActivity {
 
 
                     // -------------------------------------------------
-                    // Build actual spreadsheet grid
+                    // Build spreadsheet grid
                     // -------------------------------------------------
 
                     for (
@@ -808,23 +713,14 @@ public class upload_tt extends AppCompatActivity {
 
 
                     // -------------------------------------------------
-                    // JSON
+                    // Generate JSON internally
+                    //
+                    // This is not shown to the user.
+                    // It will be used for Firestore later.
                     // -------------------------------------------------
 
                     finalJson =
                             generateJSON();
-
-
-                    jsonText.setText(
-                            prettyJSON(
-                                    finalJson
-                            )
-                    );
-
-
-                    downloadButton.setEnabled(
-                            true
-                    );
 
 
                     importButton.setEnabled(
@@ -949,8 +845,9 @@ public class upload_tt extends AppCompatActivity {
 
 
     // =========================================================
-    // GENERATE JSON
+    // PARSE TIMETABLE CELL
     // =========================================================
+
     private JSONObject parseTimetableCell(
             String time,
             String content
@@ -966,19 +863,22 @@ public class upload_tt extends AppCompatActivity {
                     time
             );
 
-            // -----------------------------------------------------
-            // Empty cell
-            // -----------------------------------------------------
+
+            // -------------------------------------------------
+            // EMPTY CELL
+            // -------------------------------------------------
 
             if (
-                    content == null ||
-                            content.trim().isEmpty() ||
+                    content == null
+                            ||
+                            content.trim().isEmpty()
+                            ||
                             content.equals("-")
             ) {
 
                 result.put(
                         "subject",
-                        null
+                        JSONObject.NULL
                 );
 
                 result.put(
@@ -988,17 +888,17 @@ public class upload_tt extends AppCompatActivity {
 
                 result.put(
                         "batch",
-                        null
+                        JSONObject.NULL
                 );
 
                 result.put(
                         "faculty",
-                        null
+                        JSONObject.NULL
                 );
 
                 result.put(
                         "room",
-                        null
+                        JSONObject.NULL
                 );
 
                 return result;
@@ -1009,17 +909,19 @@ public class upload_tt extends AppCompatActivity {
                     content.trim();
 
 
-            // -----------------------------------------------------
-            // BREAK
-            // -----------------------------------------------------
-
             String upper =
                     value.toUpperCase(
                             Locale.US
                     );
 
+
+            // -------------------------------------------------
+            // BREAK
+            // -------------------------------------------------
+
             if (
-                    upper.equals("SHORT BREAK") ||
+                    upper.equals("SHORT BREAK")
+                            ||
                             upper.equals("BREAK")
             ) {
 
@@ -1035,26 +937,26 @@ public class upload_tt extends AppCompatActivity {
 
                 result.put(
                         "batch",
-                        null
+                        JSONObject.NULL
                 );
 
                 result.put(
                         "faculty",
-                        null
+                        JSONObject.NULL
                 );
 
                 result.put(
                         "room",
-                        null
+                        JSONObject.NULL
                 );
 
                 return result;
             }
 
 
-            // -----------------------------------------------------
+            // -------------------------------------------------
             // LUNCH
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
             if (
                     upper.equals("LUNCH")
@@ -1072,25 +974,25 @@ public class upload_tt extends AppCompatActivity {
 
                 result.put(
                         "batch",
-                        null
+                        JSONObject.NULL
                 );
 
                 result.put(
                         "faculty",
-                        null
+                        JSONObject.NULL
                 );
 
                 result.put(
                         "room",
-                        null
+                        JSONObject.NULL
                 );
 
                 return result;
             }
 
 
-            // -----------------------------------------------------
-            // Split the imported cell
+            // -------------------------------------------------
+            // SPLIT CELL
             //
             // Example:
             //
@@ -1099,7 +1001,7 @@ public class upload_tt extends AppCompatActivity {
             // Batch 01 |
             // VK |
             // CL 206
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
             String[] parts =
                     value.split(
@@ -1111,13 +1013,18 @@ public class upload_tt extends AppCompatActivity {
                     new ArrayList<>();
 
 
-            for (String part :
-                    parts) {
+            for (
+                    String part :
+                    parts
+            ) {
 
                 String cleaned =
                         part.trim();
 
-                if (!cleaned.isEmpty()) {
+
+                if (
+                        !cleaned.isEmpty()
+                ) {
 
                     cleanParts.add(
                             cleaned
@@ -1126,9 +1033,9 @@ public class upload_tt extends AppCompatActivity {
             }
 
 
-            // -----------------------------------------------------
+            // -------------------------------------------------
             // SUBJECT
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
             String subject =
                     cleanParts.size() > 0
@@ -1136,24 +1043,28 @@ public class upload_tt extends AppCompatActivity {
                             : null;
 
 
-            // -----------------------------------------------------
+            // -------------------------------------------------
             // TYPE
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
             String type =
                     null;
 
 
-            for (String part :
-                    cleanParts) {
+            for (
+                    String part :
+                    cleanParts
+            ) {
 
                 String p =
                         part.toUpperCase(
                                 Locale.US
                         );
 
+
                 if (
-                        p.equals("THEORY") ||
+                        p.equals("THEORY")
+                                ||
                                 p.equals("LAB")
                 ) {
 
@@ -1164,16 +1075,18 @@ public class upload_tt extends AppCompatActivity {
             }
 
 
-            // -----------------------------------------------------
+            // -------------------------------------------------
             // BATCH
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
             String batch =
                     null;
 
 
-            for (String part :
-                    cleanParts) {
+            for (
+                    String part :
+                    cleanParts
+            ) {
 
                 String p =
                         part.trim();
@@ -1194,16 +1107,18 @@ public class upload_tt extends AppCompatActivity {
             }
 
 
-            // -----------------------------------------------------
+            // -------------------------------------------------
             // ROOM
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
             String room =
                     null;
 
 
-            for (String part :
-                    cleanParts) {
+            for (
+                    String part :
+                    cleanParts
+            ) {
 
                 String p =
                         part.trim()
@@ -1212,48 +1127,32 @@ public class upload_tt extends AppCompatActivity {
                                 );
 
 
-                /*
-                 * Known room/lab formats:
-                 *
-                 * CR 311
-                 * CL 206
-                 * CC 402
-                 * LL 201
-                 */
-
                 if (
                         p.matches(
                                 "(CR|CL|CC|LL)\\s*\\d+"
                         )
                 ) {
 
-                    room = part.trim();
+                    room =
+                            part.trim();
 
                     break;
                 }
             }
 
 
-            // -----------------------------------------------------
+            // -------------------------------------------------
             // FACULTY
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
             String faculty =
                     null;
 
 
-            /*
-             * Faculty is normally the remaining
-             * short token after removing:
-             *
-             * subject
-             * type
-             * batch
-             * room
-             */
-
-            for (String part :
-                    cleanParts) {
+            for (
+                    String part :
+                    cleanParts
+            ) {
 
                 String p =
                         part.trim();
@@ -1262,48 +1161,46 @@ public class upload_tt extends AppCompatActivity {
                 if (
                         p.equals(subject)
                 ) {
+
                     continue;
                 }
 
 
                 if (
-                        type != null &&
-                                p.equalsIgnoreCase(type)
+                        type != null
+                                &&
+                                p.equalsIgnoreCase(
+                                        type
+                                )
                 ) {
+
                     continue;
                 }
 
 
                 if (
-                        batch != null &&
-                                p.equalsIgnoreCase(batch)
+                        batch != null
+                                &&
+                                p.equalsIgnoreCase(
+                                        batch
+                                )
                 ) {
+
                     continue;
                 }
 
 
                 if (
-                        room != null &&
-                                p.equalsIgnoreCase(room)
+                        room != null
+                                &&
+                                p.equalsIgnoreCase(
+                                        room
+                                )
                 ) {
+
                     continue;
                 }
 
-
-                /*
-                 * Faculty codes in your timetable
-                 * are short identifiers such as:
-                 *
-                 * JP
-                 * VK
-                 * RD
-                 * PS
-                 * DS
-                 * NiG
-                 * RGM
-                 * PST
-                 * AS
-                 */
 
                 if (
                         p.matches(
@@ -1318,19 +1215,21 @@ public class upload_tt extends AppCompatActivity {
             }
 
 
-            // -----------------------------------------------------
+            // -------------------------------------------------
             // DEFAULT TYPE
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
-            if (type == null) {
+            if (
+                    type == null
+            ) {
 
                 type = "OTHER";
             }
 
 
-            // -----------------------------------------------------
+            // -------------------------------------------------
             // FINAL OBJECT
-            // -----------------------------------------------------
+            // -------------------------------------------------
 
             result.put(
                     "subject",
@@ -1365,9 +1264,17 @@ public class upload_tt extends AppCompatActivity {
 
         return result;
     }
+
+
+    // =========================================================
+    // GENERATE INTERNAL JSON
+    // =========================================================
+
     private JSONObject generateJSON() {
 
-        JSONObject root = new JSONObject();
+        JSONObject root =
+                new JSONObject();
+
 
         try {
 
@@ -1376,83 +1283,115 @@ public class upload_tt extends AppCompatActivity {
                     "timetable"
             );
 
+
             root.put(
                     "sourceFile",
                     selectedFileName
             );
+
 
             root.put(
                     "sourceType",
                     selectedFileType
             );
 
+
             JSONArray schedule =
                     new JSONArray();
 
-            if (tableData.isEmpty()) {
-                root.put("schedule", schedule);
+
+            if (
+                    tableData.isEmpty()
+            ) {
+
+                root.put(
+                        "schedule",
+                        schedule
+                );
+
                 return root;
             }
 
-            // -----------------------------------------------------
-            // First row = column headers
-            // -----------------------------------------------------
+
+            // -------------------------------------------------
+            // First row = headers
+            // -------------------------------------------------
 
             ArrayList<String> headers =
                     tableData.get(0);
 
-            // -----------------------------------------------------
-            // Every remaining row = one day
-            // -----------------------------------------------------
 
-            for (int r = 1;
-                 r < tableData.size();
-                 r++) {
+            // -------------------------------------------------
+            // Remaining rows = days
+            // -------------------------------------------------
+
+            for (
+                    int r = 1;
+                    r < tableData.size();
+                    r++
+            ) {
 
                 ArrayList<String> row =
                         tableData.get(r);
 
-                if (row.isEmpty()) {
+
+                if (
+                        row.isEmpty()
+                ) {
+
                     continue;
                 }
+
 
                 JSONObject dayObject =
                         new JSONObject();
 
-                // First column = Day
+
+                // First column = day
 
                 String day =
                         row.get(0)
                                 .trim();
+
 
                 dayObject.put(
                         "day",
                         day
                 );
 
+
                 JSONArray slots =
                         new JSONArray();
+
 
                 // -------------------------------------------------
                 // Remaining columns = time slots
                 // -------------------------------------------------
 
-                for (int c = 1;
-                     c < headers.size();
-                     c++) {
+                for (
+                        int c = 1;
+                        c < headers.size();
+                        c++
+                ) {
 
                     String time =
                             headers.get(c)
                                     .trim();
 
-                    String content = "";
 
-                    if (c < row.size()) {
+                    String content =
+                            "";
+
+
+                    if (
+                            c < row.size()
+                    ) {
 
                         content =
                                 row.get(c)
                                         .trim();
                     }
+
 
                     JSONObject slot =
                             parseTimetableCell(
@@ -1460,30 +1399,36 @@ public class upload_tt extends AppCompatActivity {
                                     content
                             );
 
+
                     slots.put(
                             slot
                     );
                 }
+
 
                 dayObject.put(
                         "slots",
                         slots
                 );
 
+
                 schedule.put(
                         dayObject
                 );
             }
+
 
             root.put(
                     "schedule",
                     schedule
             );
 
+
         } catch (Exception e) {
 
             e.printStackTrace();
         }
+
 
         return root;
     }
@@ -1497,7 +1442,9 @@ public class upload_tt extends AppCompatActivity {
             String filename
     ) {
 
-        if (filename == null) {
+        if (
+                filename == null
+        ) {
 
             return "UNKNOWN";
         }
@@ -1600,90 +1547,6 @@ public class upload_tt extends AppCompatActivity {
         return result != null
                 ? result
                 : "timetable";
-    }
-
-
-    // =========================================================
-    // PRETTY JSON
-    // =========================================================
-
-    private String prettyJSON(
-            JSONObject object
-    ) {
-
-        if (object == null) {
-
-            return "No JSON generated.";
-        }
-
-
-        try {
-
-            return object.toString(
-                    4
-            );
-
-        } catch (Exception e) {
-
-            return object.toString();
-        }
-    }
-
-
-    // =========================================================
-    // SAVE JSON
-    // =========================================================
-
-    private void saveJson(
-            Uri uri
-    ) {
-
-        try {
-
-            OutputStream output =
-                    getContentResolver()
-                            .openOutputStream(
-                                    uri
-                            );
-
-
-            if (output == null) {
-
-                throw new Exception(
-                        "Could not open destination."
-                );
-            }
-
-
-            output.write(
-                    prettyJSON(
-                            finalJson
-                    )
-                            .getBytes(
-                                    StandardCharsets.UTF_8
-                            )
-            );
-
-
-            output.close();
-
-
-            Toast.makeText(
-                    this,
-                    "JSON exported successfully.",
-                    Toast.LENGTH_LONG
-            ).show();
-
-
-        } catch (Exception e) {
-
-            Toast.makeText(
-                    this,
-                    "Export failed: " +
-                            e.getMessage(),
-                    Toast.LENGTH_LONG
-            ).show();
-        }
     }
 
 

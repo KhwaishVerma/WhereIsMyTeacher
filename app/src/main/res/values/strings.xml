@@ -1,116 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- ===================================================== -->
+    <!-- APP -->
+    <!-- ===================================================== -->
+
     <string name="app_name">MAD Project</string>
+
+
+    <!-- ===================================================== -->
+    <!-- LOGIN -->
+    <!-- ===================================================== -->
+
     <string name="heading">Where is My Teacher?</string>
     <string name="subheading">Find your teacher. Anytime.</string>
+
     <string name="username">Enter NMIMS email ID</string>
     <string name="password">Enter password</string>
+
     <string name="sub1">forgot password?</string>
     <string name="b1">Log In</string>
+
     <string name="sub2">Do not have an account?</string>
     <string name="b2">Register here</string>
+
+
+    <!-- ===================================================== -->
+    <!-- REGISTRATION TYPE -->
+    <!-- ===================================================== -->
+
     <string name="s1">Create Account</string>
     <string name="s2">Who are you?</string>
+
     <string name="b3">STUDENT \nFind Teachers and request meetings</string>
     <string name="b4">TEACHER \nManage schedule and availability</string>
+
     <string name="s3">Already Registered?</string>
     <string name="b5">Login</string>
+
+
+    <!-- ===================================================== -->
+    <!-- STUDENT REGISTRATION -->
+    <!-- ===================================================== -->
+
     <string name="s4">Student Registration</string>
+
     <string name="s5">Full Name</string>
     <string name="name">Enter your full name</string>
+
     <string name="s6">College SAP ID</string>
     <string name="sap">Enter your College SAP ID</string>
+
     <string name="s7">Email</string>
     <string name="email">student@nmims.in</string>
+
     <string name="s8">Department</string>
     <string name="dept">Select Department</string>
+
     <string name="s9">Password</string>
     <string name="passwd">*********</string>
+
     <string name="s10">Confirm Password</string>
+    <string name="confpasswd">*********</string>
+
     <string name="s11">Year</string>
     <string name="year">Select Year</string>
-    <string name="confpasswd">*********</string>
+
     <string name="b6">CREATE ACCOUNT</string>
+
+
+    <!-- ===================================================== -->
+    <!-- TEACHER REGISTRATION -->
+    <!-- ===================================================== -->
+
     <string name="s12">Teacher Registration</string>
+
     <string name="s13">Dr. Prof. Name</string>
     <string name="s14">teacher@nmims.edu</string>
+
     <string name="s15">Designation</string>
     <string name="s16">Select Designation</string>
+
     <string name="s17">Faculty Area</string>
     <string name="s18">e.g. Faculty Area | Room-2 | A Block</string>
+
     <string name="s19">Employee ID</string>
     <string name="s20">Enter Employee ID</string>
-    <string name="welcome">Hello, Khwaish!</string>
-    <string name="department">Computer Engineering</string>
+    <string name="s21">Dr. %1$s</string>
+    <string name="s22">Hello %1$</string>
+
+
+    <!-- ===================================================== -->
+    <!-- STUDENT DASHBOARD -->
+    <!-- ===================================================== -->
+
+    <string name="welcome">Hello!</string>
+    <string name="department">Department</string>
+
     <string name="find_teacher">Find Your Teacher</string>
     <string name="search_teacher">Search teacher...</string>
+
     <string name="quick_access">QUICK ACCESS</string>
+
     <string name="find_teacher_button">Find Teacher</string>
     <string name="my_requests">My Requests</string>
+
     <string name="favourite_teachers">MY FAVOURITE TEACHERS</string>
-    <string name="teacher1">Dr. Sharma</string>
-    <string name="subject1">Data Structures</string>
-    <string name="room1">AB-204</string>
-    <string name="available1">Available until 11:00 AM</string>
-    <string name="teacher2">Prof. Mehta</string>
-    <string name="subject2">Operating Systems</string>
-    <string name="leave2">On Leave Today</string>
+
+
+    <!-- ===================================================== -->
+    <!-- STUDENT NAVIGATION -->
+    <!-- ===================================================== -->
+
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="requests">Requests</string>
-    <string name="title_activity_main7">MainActivity7</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="menu_transform">Transform</string>
-    <string name="menu_reflow">Reflow</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_settings">Settings</string>
-    <string name="lorem_ipsum_title">Lorem Ipsum"</string>
-    <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
-        typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
-        since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-        type specimen book"
-    </string>
-    <string name="fab_content_description">Represents a view to invoke an action</string>
-    <string name="image_view_item_transform_content_description">Represents an image view in the
-        item
-    </string>
+
+
+    <!-- ===================================================== -->
+    <!-- STUDENT TEACHER SEARCH -->
+    <!-- ===================================================== -->
+
     <string name="student_welcome">WHERE IS MY TEACHER?</string>
     <string name="search_label">Search teacher</string>
     <string name="search_hint">Search teacher...</string>
+
     <string name="currently">CURRENTLY</string>
-    <string name="teacher_name">Dr. Sharma</string>
-    <string name="subject">Data Structures</string>
-    <string name="location">Lab 3</string>
-    <string name="current_time">10:00 – 11:00 AM</string>
     <string name="next">NEXT</string>
-    <string name="next_subject">CN</string>
-    <string name="next_location">Room 305</string>
-    <string name="next_time">11:00 AM</string>
+
     <string name="full_timetable">View Full Timetable</string>
+
+
+    <!-- ===================================================== -->
+    <!-- STUDENT TEACHER SEARCH DYNAMIC DATA -->
+    <!-- ===================================================== -->
+
+    <!-- These are intentionally empty because they are filled from Firestore. -->
+
+    <string name="teacher_name"></string>
+    <string name="subject"></string>
+    <string name="location"></string>
+    <string name="current_time"></string>
+
+    <string name="next_subject"></string>
+    <string name="next_location"></string>
+    <string name="next_time"></string>
+
+
+    <!-- ===================================================== -->
+    <!-- MEETING -->
+    <!-- ===================================================== -->
 
     <string name="a1">Request Meeting</string>
     <string name="a2">Select Date of Meeting</string>
     <string name="a3">Continue</string>
     <string name="a4">Enter subject for Meeting</string>
-    <string name="a5">18 September 2026</string>
-    <string name="a6"> My Requests</string>
+    <string name="a5">Select Date</string>
+
+    <string name="a6">My Requests</string>
     <string name="a7">PENDING</string>
     <string name="a8">CONFIRMED</string>
 
-    <!-- Student Requests -->
-    <string name="pending_teacher">Dr. Sharma</string>
-    <string name="pending_date">   18 Sept</string>
-    <string name="pending_time">   3:00 - 3:15 PM</string>
-    <string name="pending_status">   Waiting for response</string>
 
-    <string name="confirmed_teacher">Dr. Dhanare</string>
-    <string name="confirmed_date">   19 Sept</string>
-    <string name="confirmed_time">   11:00 - 11:15 AM</string>
-    <string name="confirmed_location">   Faculty Area</string>
-    <string name="confirmed_status">   Confirmed</string>
+    <!-- ===================================================== -->
+    <!-- STUDENT REQUESTS -->
+    <!-- ===================================================== -->
 
+    <!-- Dynamic request data should come from Firestore. -->
+
+    <string name="pending_teacher"></string>
+    <string name="pending_date"></string>
+    <string name="pending_time"></string>
+    <string name="pending_status"></string>
+
+    <string name="confirmed_teacher"></string>
+    <string name="confirmed_date"></string>
+    <string name="confirmed_time"></string>
+    <string name="confirmed_location"></string>
+    <string name="confirmed_status"></string>
+
+
+    <!-- ===================================================== -->
+    <!-- TEACHER DASHBOARD -->
+    <!-- ===================================================== -->
+
+    <string name="teacher_greeting">Hello Dr. %1$s</string>
+
+    <string name="teacher_department">Loading department...</string>
+    <string name="teacher_designation">Loading designation...</string>
+
+    <string name="student_requests">Student Requests</string>
+    <string name="no_pending_requests">No pending student requests.</string>
+
+    <string name="current_class">Current Class</string>
+    <string name="next_class">Next Class</string>
+
+    <string name="loading">Loading...</string>
+    <string name="no_current_class">No Current Class</string>
+    <string name="no_more_classes">No More Classes</string>
+
+    <string name="timetable">Timetable</string>
+    <string name="my_timetable">My Time Table</string>
+    <string name="edit_timetable">Edit Time Table</string>
+    <string name="upload_timetable">Upload Time Table</string>
+
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+
+    <string name="pending">PENDING</string>
+    <string name="accepted">ACCEPTED</string>
+    <string name="rejected">REJECTED</string>
+
+
+    <!-- ===================================================== -->
+    <!-- TEACHER PROFILE / FIRESTORE -->
+    <!-- ===================================================== -->
+
+    <string name="teacher_name_not_available">Hello Dr. Teacher</string>
+    <string name="teacher_profile_not_found">Hello Dr. Teacher</string>
+
+    <string name="profile_not_found">Profile not found</string>
+
+    <string name="department_not_available">
+        Department not available
+    </string>
+
+    <string name="profile_load_failed">
+        Could not load teacher profile.
+    </string>
+
+    <string name="student_name_not_available">
+        Student name unavailable
+    </string>
+
+
+    <!-- ===================================================== -->
+    <!-- TIMETABLE IMPORTER -->
+    <!-- ===================================================== -->
+
+    <string name="timetable_importer">Timetable Importer</string>
+    <string name="import_timetable">Import Timetable</string>
+
+    <string name="supported_formats">
+        Supported formats: CSV, XLS, XLSX
+    </string>
+
+    <string name="select_timetable_file">
+        Select Timetable File
+    </string>
+
+    <string name="no_file_selected">
+        No file selected
+    </string>
+
+    <string name="ready_to_import">
+        Ready to import.
+    </string>
+
+    <string name="select_file_to_begin">
+        Select a timetable file to begin.
+    </string>
+
+    <string name="timetable_preview">
+        Timetable Preview
+    </string>
+
+
+    <!-- ===================================================== -->
+    <!-- GENERATED NAVIGATION -->
+    <!-- ===================================================== -->
+
+    <string name="title_activity_main7">MainActivity7</string>
+
+    <string name="navigation_drawer_open">
+        Open navigation drawer
+    </string>
+
+    <string name="navigation_drawer_close">
+        Close navigation drawer
+    </string>
+
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">
+        android.studio@android.com
+    </string>
+
+    <string name="nav_header_desc">
+        Navigation header
+    </string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_transform">Transform</string>
+    <string name="menu_reflow">Reflow</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="student_greeting">Hello</string>
+
+    <string name="fab_content_description">
+        Represents a view to invoke an action
+    </string>
+
+    <string name="image_view_item_transform_content_description">
+        Represents an image view in the item
+    </string>
+    <!-- ===================================================== -->
+    <!-- LEGACY STUDENT DASHBOARD REFERENCES -->
+    <!-- ===================================================== -->
+
+    <string name="teacher1"></string>
+    <string name="subject1"></string>
+    <string name="room1"></string>
+    <string name="available1"></string>
+
+    <string name="teacher2"></string>
+    <string name="subject2"></string>
+    <string name="leave2"></string>
 </resources>

@@ -9,7 +9,7 @@
     android:background="#F7F7F7"
     android:fillViewport="true"
     android:scrollbars="none"
-    tools:context=".teacher_availability">
+    tools:context=".teacher_dashboard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Dr. Sharma"
+            android:text="@string/s21"
             android:textColor="#111111"
             android:textSize="28sp"
             android:textStyle="bold" />
