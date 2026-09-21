@@ -12,12 +12,13 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+
         <!-- HEADER -->
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="WhereIsMyTeacher"
+            android:text="@string/app_name"
             android:textSize="26sp"
             android:textStyle="bold"
             android:textColor="#111827"
@@ -26,7 +27,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Timetable Importer"
+            android:text="@string/timetable_importer"
             android:textSize="14sp"
             android:textColor="#6B7280"
             android:gravity="center"
@@ -46,7 +47,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Import Timetable"
+                android:text="@string/import_timetable"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="#111827"/>
@@ -54,7 +55,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Supported formats: CSV, XLS, XLSX"
+                android:text="@string/supported_formats"
                 android:textSize="13sp"
                 android:textColor="#6B7280"
                 android:layout_marginTop="4dp"/>
@@ -64,14 +65,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:text="Select Timetable File"
+                android:text="@string/select_timetable_file"
                 android:textAllCaps="false"/>
 
             <TextView
                 android:id="@+id/fileNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No file selected"
+                android:text="@string/no_file_selected"
                 android:textSize="13sp"
                 android:textColor="#6B7280"
                 android:gravity="center"
@@ -87,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Import Timetable"
+            android:text="@string/import_timetable"
             android:textAllCaps="false"
             android:enabled="false"/>
 
@@ -109,7 +110,7 @@
             android:id="@+id/statusText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select a timetable file to begin."
+            android:text="@string/select_file_to_begin"
             android:textSize="13sp"
             android:textColor="#374151"
             android:gravity="center"
@@ -121,7 +122,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Timetable Preview"
+            android:text="@string/timetable_preview"
             android:textSize="19sp"
             android:textStyle="bold"
             android:textColor="#111827"
@@ -141,43 +142,6 @@
                 android:background="#FFFFFF"/>
 
         </HorizontalScrollView>
-
-
-        <!-- JSON -->
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Generated JSON"
-            android:textSize="19sp"
-            android:textStyle="bold"
-            android:textColor="#111827"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
-            android:id="@+id/jsonText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="JSON output will appear here..."
-            android:textIsSelectable="true"
-            android:fontFamily="monospace"
-            android:textSize="11sp"
-            android:textColor="#1F2937"
-            android:background="#FFFFFF"
-            android:padding="14dp"/>
-
-
-        <!-- DOWNLOAD -->
-
-        <Button
-            android:id="@+id/downloadButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="Export JSON"
-            android:textAllCaps="false"
-            android:enabled="false"/>
 
     </LinearLayout>
 

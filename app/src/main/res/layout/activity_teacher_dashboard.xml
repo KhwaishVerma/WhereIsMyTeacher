@@ -20,11 +20,13 @@
         android:paddingTop="24dp"
         android:paddingBottom="30dp">
 
+
+
         <TextView
             android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello Teacher!"
+            android:text="@string/teacher_greeting"
             android:textColor="#111111"
             android:textSize="26sp"
             android:textStyle="bold" />
@@ -34,9 +36,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Department"
+            android:text="@string/teacher_department"
             android:textColor="#555555"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/designationText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="@string/teacher_designation"
+            android:textColor="#777777"
+            android:textSize="14sp" />
 
         <View
             android:id="@+id/divider"
@@ -45,92 +56,52 @@
             android:layout_marginTop="18dp"
             android:background="#D0D0D0" />
 
+
+        <!-- STUDENT REQUESTS -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="Student Request"
+            android:text="@string/student_requests"
             android:textColor="#111111"
             android:textSize="22sp"
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/requestContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:orientation="vertical"
-            android:padding="20dp"
-            android:background="#FFFFFF"
-            android:elevation="2dp">
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/noRequestText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="KV"
-                android:textColor="#222222"
-                android:textSize="19sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="1:00 PM"
-                android:textColor="#444444"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="B.Tech CE (A) 5th Sem"
-                android:textColor="#555555"
-                android:textSize="16sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="AI Project"
-                android:textColor="#555555"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="52dp"
-                    android:layout_weight="1"
-                    android:text="Accept" />
-
-                <Space
-                    android:layout_width="12dp"
-                    android:layout_height="1dp" />
-
-                <Button
-                    android:layout_width="0dp"
-                    android:layout_height="52dp"
-                    android:layout_weight="1"
-                    android:text="Reject" />
-
-            </LinearLayout>
+                android:padding="20dp"
+                android:background="#FFFFFF"
+                android:text="@string/loading"
+                android:textColor="#666666"
+                android:textSize="15sp"
+                android:gravity="center" />
 
         </LinearLayout>
+
+
+        <!-- CURRENT CLASS -->
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Current Class"
+            android:text="@string/current_class"
             android:textColor="#111111"
             android:textSize="22sp"
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/currentClassContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -140,50 +111,58 @@
             android:elevation="2dp">
 
             <TextView
+                android:id="@+id/currentSubjectText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Data Structures"
+                android:text="@string/loading"
                 android:textColor="#222222"
                 android:textSize="19sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/currentTimeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="10:00 - 11:00 AM"
+                android:text=""
                 android:textColor="#444444"
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/currentBatchText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="B.Tech CE (A) 3rd Sem"
+                android:text=""
                 android:textColor="#555555"
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/currentRoomText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="CL-204"
+                android:text=""
                 android:textColor="#555555"
                 android:textSize="16sp" />
 
         </LinearLayout>
+
+
+        <!-- NEXT CLASS -->
 
         <TextView
             android:id="@+id/textView29"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="Next Class"
+            android:text="@string/next_class"
             android:textColor="#111111"
             android:textSize="22sp"
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/nextClassContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -193,44 +172,51 @@
             android:elevation="2dp">
 
             <TextView
+                android:id="@+id/nextSubjectText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CN"
+                android:text="@string/loading"
                 android:textColor="#222222"
                 android:textSize="19sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/nextTimeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="11:00 - 12:00 PM"
+                android:text=""
                 android:textColor="#444444"
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/nextBatchText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="B.Tech AI DS (B) 5th Sem"
+                android:text=""
                 android:textColor="#555555"
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/nextRoomText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="CL-204"
+                android:text=""
                 android:textColor="#555555"
                 android:textSize="16sp" />
 
         </LinearLayout>
 
+
+        <!-- TIMETABLE -->
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="Timetable"
+            android:text="@string/timetable"
             android:textColor="#111111"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -240,21 +226,21 @@
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="12dp"
-            android:text="My Time Table" />
+            android:text="@string/my_timetable" />
 
         <Button
             android:id="@+id/button10"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
-            android:text="Edit Time Table" />
+            android:text="@string/edit_timetable" />
 
         <Button
             android:id="@+id/upbutton"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
-            android:text="Upload Time Table" />
+            android:text="@string/upload_timetable" />
 
     </LinearLayout>
 
