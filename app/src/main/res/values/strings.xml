@@ -249,37 +249,15 @@
         Select Timetable File
     </string>
 
-    <string name="no_file_selected">
-        No file selected
-    </string>
-
-    <string name="ready_to_import">
-        Ready to import.
-    </string>
-
-    <string name="select_file_to_begin">
-        Select a timetable file to begin.
-    </string>
-
-    <string name="timetable_preview">
-        Timetable Preview
-    </string>
-
-
+    <string name="no_file_selected">No file selected</string>
+    <string name="select_file_to_begin">Select a timetable file to begin.</string>
+    <string name="timetable_preview">Timetable Preview</string>
     <!-- ===================================================== -->
     <!-- GENERATED NAVIGATION -->
     <!-- ===================================================== -->
-
     <string name="title_activity_main7">MainActivity7</string>
-
-    <string name="navigation_drawer_open">
-        Open navigation drawer
-    </string>
-
-    <string name="navigation_drawer_close">
-        Close navigation drawer
-    </string>
-
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">
         android.studio@android.com
@@ -317,4 +295,93 @@
     <string name="teacher2"></string>
     <string name="subject2"></string>
     <string name="leave2"></string>
+
+    <string name="selected_faculty_sheet">
+    Selected Faculty Sheet
+</string>
+
+    <string name="no_sheet_selected">
+    No sheet selected
+</string>
+
+    <string name="faculty_name_not_available">
+    Faculty name not available
+</string>
+
+    <string name="ready_to_import">
+    Ready to import.
+</string>
+
+    <string name="unsupported_file">
+    Unsupported file. Please select CSV, XLS, or XLSX.
+</string>
+
+    <string name="select_file_first">
+    Please select a timetable file.
+</string>
+
+    <string name="reading_timetable">
+    Reading timetable...
+</string>
+
+    <string name="import_failed">
+    Import failed:
+</string>
+
+    <string name="could_not_open_excel">
+    Could not open Excel file.
+</string>
+
+    <string name="could_not_open_csv">
+    Could not open CSV file.
+</string>
+
+    <string name="no_sheets_found">
+    No sheets found in the workbook.
+</string>
+
+    <string name="no_workbook_loaded">
+    No workbook loaded.
+</string>
+
+    <string name="select_faculty_sheet">
+    Select Your Faculty Timetable
+</string>
+
+    <string name="no_table_data">
+    No timetable data found.
+</string>
+
+    <string name="timetable_imported">
+    Timetable parsed successfully.
+</string>
+
+    <string name="schedule_entries">
+    schedule entries found.
+</string>
+
+    <string name="parsing_failed">
+    Could not parse the timetable.
+</string>
+
+    <string name="time_header_not_found">
+    Could not identify the timetable time-header row.
+</string>
+
+
+    <string name="csv_requires_sheet">
+    CSV files do not contain faculty sheets. Please use the Excel timetable workbook.
+</string>
+
+    <string name="unknown_error">
+    Unknown error.
+</string>
+
+    <string name="user_not_authenticated">Teacher is not signed in.</string>
+    <string name="saving_timetable">Saving timetable...</string>
+    <string name="timetable_too_large">This timetable contains too many entries to save in one import.</string>
+    <string name="timetable_saved_to_firestore">Timetable saved successfully. %1$d schedule entries uploaded.</string>
+    <string name="timetable_saved_successfully">Timetable saved successfully.</string>
+    <string name="firestore_save_failed">Could not save timetable.</string>
+    <string name="firestore_read_failed">Could not read the existing timetable.</string>
 </resources>

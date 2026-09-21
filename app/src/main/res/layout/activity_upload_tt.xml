@@ -81,7 +81,47 @@
         </LinearLayout>
 
 
-        <!-- PROCESS -->
+        <!-- FACULTY SHEET -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginTop="12dp"
+            android:background="#FFFFFF">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/selected_faculty_sheet"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#374151"/>
+
+            <TextView
+                android:id="@+id/selectedSheetText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_sheet_selected"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#111827"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/facultyNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/faculty_name_not_available"
+                android:textSize="13sp"
+                android:textColor="#6B7280"
+                android:layout_marginTop="3dp"/>
+
+        </LinearLayout>
+
+
+        <!-- IMPORT -->
 
         <Button
             android:id="@+id/ocrButton"
@@ -117,7 +157,7 @@
             android:padding="10dp"/>
 
 
-        <!-- TABLE -->
+        <!-- PARSED PREVIEW -->
 
         <TextView
             android:layout_width="match_parent"
@@ -136,7 +176,7 @@
             android:scrollbars="horizontal">
 
             <TableLayout
-                android:id="@+id/ocrTable"
+                android:id="@+id/parsedTable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"/>
