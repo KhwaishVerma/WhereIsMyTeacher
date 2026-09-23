@@ -18,7 +18,7 @@
     <string name="username">Enter NMIMS email ID</string>
     <string name="password">Enter password</string>
 
-    <string name="sub1">forgot password?</string>
+    <string name="forgot_password">forgot password?</string>
     <string name="b1">Log In</string>
 
     <string name="sub2">Do not have an account?</string>
