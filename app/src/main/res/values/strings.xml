@@ -458,17 +458,13 @@
     <string name="save_failed">Could not save timetable slot.</string>
     <string name="delete_failed">Could not delete timetable slot.</string>
     <string name="no_schedule">No class scheduled.</string>
-
     <string name="short_break">Short Break</string>
     <string name="lunch_break">Lunch Break</string>
-
     <string name="theory">THEORY</string>
     <string name="lab">LAB</string>
-
     <string name="none">None</string>
     <string name="current_class_format">Current: %1$s</string>
     <string name="next_class_format">Next: %1$s at %2$s</string>
     <string name="next_class_time_format">%1$s - %2$s</string>
-
     <string name="teacher_finished_for_today">Teacher has finished scheduled classes for today.</string>
 </resources>
