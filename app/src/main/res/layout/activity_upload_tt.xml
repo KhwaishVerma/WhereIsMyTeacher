@@ -2,186 +2,472 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F6F7FB">
+    android:background="#F6F7FB"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="16dp">
 
-
+        <!-- ================================================= -->
         <!-- HEADER -->
+        <!-- ================================================= -->
 
         <TextView
+            android:id="@+id/timetableTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="26sp"
+            android:textSize="25sp"
             android:textStyle="bold"
             android:textColor="#111827"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <TextView
+            android:id="@+id/timetableSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/timetable_importer"
+            android:text="@string/teacher_timetable"
             android:textSize="14sp"
             android:textColor="#6B7280"
             android:gravity="center"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="18dp" />
 
 
-        <!-- FILE CARD -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="18dp"
-            android:background="#FFFFFF">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/import_timetable"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#111827"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/supported_formats"
-                android:textSize="13sp"
-                android:textColor="#6B7280"
-                android:layout_marginTop="4dp"/>
-
-            <Button
-                android:id="@+id/uploadButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="@string/select_timetable_file"
-                android:textAllCaps="false"/>
-
-            <TextView
-                android:id="@+id/fileNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/no_file_selected"
-                android:textSize="13sp"
-                android:textColor="#6B7280"
-                android:gravity="center"
-                android:layout_marginTop="8dp"/>
-
-        </LinearLayout>
-
-
-        <!-- FACULTY SHEET -->
+        <!-- ================================================= -->
+        <!-- TEACHER INFO -->
+        <!-- ================================================= -->
 
         <LinearLayout
+            android:id="@+id/teacherInfoCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:layout_marginTop="12dp"
             android:background="#FFFFFF">
 
             <TextView
+                android:id="@+id/teacherNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/selected_faculty_sheet"
-                android:textSize="14sp"
+                android:text="@string/loading"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#374151"/>
+                android:textColor="#111827" />
 
             <TextView
-                android:id="@+id/selectedSheetText"
+                android:id="@+id/teacherCodeText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/no_sheet_selected"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="#111827"
-                android:layout_marginTop="5dp"/>
-
-            <TextView
-                android:id="@+id/facultyNameText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/faculty_name_not_available"
+                android:text="@string/loading"
                 android:textSize="13sp"
                 android:textColor="#6B7280"
-                android:layout_marginTop="3dp"/>
+                android:layout_marginTop="3dp" />
 
         </LinearLayout>
 
 
-        <!-- IMPORT -->
-
-        <Button
-            android:id="@+id/ocrButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="@string/import_timetable"
-            android:textAllCaps="false"
-            android:enabled="false"/>
-
-
-        <!-- PROGRESS -->
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"
-            android:visibility="gone"/>
-
-
-        <!-- STATUS -->
+        <!-- ================================================= -->
+        <!-- INFORMATION -->
+        <!-- ================================================= -->
 
         <TextView
-            android:id="@+id/statusText"
+            android:id="@+id/instructionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_file_to_begin"
+            android:text="@string/timetable_edit_instruction"
             android:textSize="13sp"
-            android:textColor="#374151"
-            android:gravity="center"
-            android:padding="10dp"/>
+            android:textColor="#4B5563"
+            android:paddingTop="14dp"
+            android:paddingBottom="10dp" />
 
 
-        <!-- PARSED PREVIEW -->
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/timetable_preview"
-            android:textSize="19sp"
-            android:textStyle="bold"
-            android:textColor="#111827"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="8dp"/>
+        <!-- ================================================= -->
+        <!-- DAY SELECTOR -->
+        <!-- ================================================= -->
 
         <HorizontalScrollView
+            android:id="@+id/dayScroll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#D1D5DB"
+            android:scrollbars="none">
+
+
+            <LinearLayout
+                android:id="@+id/daySelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/dayMonButton"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:text="@string/monday"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/dayTueButton"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:text="@string/tuesday"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="6dp" />
+
+                <Button
+                    android:id="@+id/dayWedButton"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:text="@string/wednesday"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="6dp" />
+
+                <Button
+                    android:id="@+id/dayThuButton"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:text="@string/thursday"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="6dp" />
+
+                <Button
+                    android:id="@+id/dayFriButton"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:text="@string/friday"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="6dp" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+
+        <!-- ================================================= -->
+        <!-- CURRENT DAY -->
+        <!-- ================================================= -->
+
+        <TextView
+            android:id="@+id/currentDayText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/monday"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#111827"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp" />
+
+
+        <!-- ================================================= -->
+        <!-- WEEKLY TIMETABLE -->
+        <!-- ================================================= -->
+
+        <HorizontalScrollView
+            android:id="@+id/timetableHorizontalScroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:scrollbars="horizontal">
 
             <TableLayout
-                android:id="@+id/parsedTable"
+                android:id="@+id/timetableTable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"/>
+                android:stretchColumns="1"
+                android:background="#FFFFFF" />
 
         </HorizontalScrollView>
+
+
+        <!-- ================================================= -->
+        <!-- EMPTY / LOADING -->
+        <!-- ================================================= -->
+
+        <ProgressBar
+            android:id="@+id/timetableProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/timetableStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textSize="13sp"
+            android:textColor="#6B7280"
+            android:gravity="center"
+            android:padding="12dp" />
+
+
+        <!-- ================================================= -->
+        <!-- SLOT EDITOR -->
+        <!-- ================================================= -->
+
+        <LinearLayout
+            android:id="@+id/slotEditor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp"
+            android:layout_marginTop="18dp"
+            android:background="#FFFFFF"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/editorTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_timetable_slot"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:textColor="#111827"
+                android:layout_marginBottom="14dp" />
+
+
+            <!-- DAY -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/day"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151" />
+
+            <Spinner
+                android:id="@+id/editorDaySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- START TIME -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/start_time"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <Spinner
+                android:id="@+id/editorStartTimeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- END TIME -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/end_time"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <Spinner
+                android:id="@+id/editorEndTimeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- SUBJECT -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/subject"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/editorSubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_subject"
+                android:inputType="textCapSentences"
+                android:singleLine="true" />
+
+
+            <!-- TYPE -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/class_type"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <Spinner
+                android:id="@+id/editorTypeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- PROGRAM -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/program"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <Spinner
+                android:id="@+id/editorProgramSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- SEMESTER -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/semester"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <Spinner
+                android:id="@+id/editorSemesterSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- SECTION -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/section"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <Spinner
+                android:id="@+id/editorSectionSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- BATCH -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/batch"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <Spinner
+                android:id="@+id/editorBatchSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="4dp" />
+
+
+            <!-- ROOM -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/room"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginTop="12dp" />
+
+            <EditText
+                android:id="@+id/editorRoom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_room"
+                android:inputType="textCapCharacters"
+                android:singleLine="true" />
+
+
+            <!-- BUTTONS -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/cancelEditButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/deleteSlotButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/delete_slot"
+                    android:textAllCaps="false" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="1dp" />
+
+                <Button
+                    android:id="@+id/saveSlotButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/save_slot"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!-- ================================================= -->
+        <!-- BOTTOM SPACE -->
+        <!-- ================================================= -->
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
 
     </LinearLayout>
 
