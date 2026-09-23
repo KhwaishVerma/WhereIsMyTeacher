@@ -20,7 +20,9 @@
         android:paddingTop="24dp"
         android:paddingBottom="30dp">
 
-
+        <!-- ================================================= -->
+        <!-- TEACHER PROFILE -->
+        <!-- ================================================= -->
 
         <TextView
             android:id="@+id/textView7"
@@ -49,6 +51,15 @@
             android:textColor="#777777"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/teacherCodeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Teacher Code"
+            android:textColor="#777777"
+            android:textSize="14sp" />
+
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
@@ -57,7 +68,9 @@
             android:background="#D0D0D0" />
 
 
+        <!-- ================================================= -->
         <!-- STUDENT REQUESTS -->
+        <!-- ================================================= -->
 
         <TextView
             android:layout_width="match_parent"
@@ -89,7 +102,9 @@
         </LinearLayout>
 
 
+        <!-- ================================================= -->
         <!-- CURRENT CLASS -->
+        <!-- ================================================= -->
 
         <TextView
             android:layout_width="match_parent"
@@ -135,7 +150,7 @@
                 android:layout_marginTop="4dp"
                 android:text=""
                 android:textColor="#555555"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/currentRoomText"
@@ -144,12 +159,14 @@
                 android:layout_marginTop="4dp"
                 android:text=""
                 android:textColor="#555555"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
 
+        <!-- ================================================= -->
         <!-- NEXT CLASS -->
+        <!-- ================================================= -->
 
         <TextView
             android:id="@+id/textView29"
@@ -196,7 +213,7 @@
                 android:layout_marginTop="4dp"
                 android:text=""
                 android:textColor="#555555"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/nextRoomText"
@@ -205,12 +222,48 @@
                 android:layout_marginTop="4dp"
                 android:text=""
                 android:textColor="#555555"
-                android:textSize="16sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
 
+        <!-- ================================================= -->
+        <!-- TODAY'S COMPLETE SCHEDULE -->
+        <!-- ================================================= -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Today's Schedule"
+            android:textColor="#111111"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/todayScheduleContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/todayScheduleLoading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:gravity="center"
+                android:text="@string/loading"
+                android:textColor="#666666"
+                android:textSize="15sp"
+                android:background="#FFFFFF" />
+
+        </LinearLayout>
+
+
+        <!-- ================================================= -->
         <!-- TIMETABLE -->
+        <!-- ================================================= -->
 
         <TextView
             android:layout_width="match_parent"
@@ -222,25 +275,13 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button8"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="12dp"
-            android:text="@string/my_timetable" />
-
-        <Button
             android:id="@+id/button10"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
-            android:text="@string/edit_timetable" />
+            android:text="@string/edit_timetable"
+            android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/upbutton"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/upload_timetable" />
 
     </LinearLayout>
 

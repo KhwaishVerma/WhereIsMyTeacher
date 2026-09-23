@@ -95,11 +95,15 @@
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_marginTop="35dp"
-            android:layout_marginBottom="15dp" />
+            android:layout_marginBottom="15dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackground" />
 
 
         <!-- ============================================== -->
-        <!-- TEACHER CARD 1 -->
+        <!-- FAVOURITE TEACHER CARD 1 -->
         <!-- ============================================== -->
 
         <LinearLayout
@@ -108,13 +112,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textViewTeacher1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/teacher1"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="6dp" />
@@ -123,7 +127,6 @@
                 android:id="@+id/textViewSubject1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/subject1"
                 android:textSize="15sp"
                 android:layout_marginBottom="4dp" />
 
@@ -131,7 +134,6 @@
                 android:id="@+id/textViewRoom1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/room1"
                 android:textSize="15sp"
                 android:layout_marginBottom="4dp" />
 
@@ -139,14 +141,13 @@
                 android:id="@+id/textViewAvailable1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/available1"
                 android:textSize="15sp" />
 
         </LinearLayout>
 
 
         <!-- ============================================== -->
-        <!-- TEACHER CARD 2 -->
+        <!-- FAVOURITE TEACHER CARD 2 -->
         <!-- ============================================== -->
 
         <LinearLayout
@@ -154,13 +155,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textViewTeacher2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/teacher2"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="6dp" />
@@ -169,15 +170,20 @@
                 android:id="@+id/textViewSubject2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/subject2"
                 android:textSize="15sp"
                 android:layout_marginBottom="4dp" />
 
             <TextView
-                android:id="@+id/textViewLeave2"
+                android:id="@+id/textViewRoom2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/leave2"
+                android:textSize="15sp"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:id="@+id/textViewAvailable2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textSize="15sp" />
 
         </LinearLayout>

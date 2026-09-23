@@ -138,7 +138,6 @@
     <!-- These are intentionally empty because they are filled from Firestore. -->
 
     <string name="teacher_name"></string>
-    <string name="subject"></string>
     <string name="location"></string>
     <string name="current_time"></string>
 
@@ -184,7 +183,7 @@
     <!-- TEACHER DASHBOARD -->
     <!-- ===================================================== -->
 
-    <string name="teacher_greeting">Hello Dr. %1$s</string>
+    <string name="teacher_greeting">Hello %1$s</string>
 
     <string name="teacher_department">Loading department...</string>
     <string name="teacher_designation">Loading designation...</string>
@@ -225,9 +224,6 @@
         Department not available
     </string>
 
-    <string name="profile_load_failed">
-        Could not load teacher profile.
-    </string>
 
     <string name="student_name_not_available">
         Student name unavailable
@@ -384,4 +380,95 @@
     <string name="timetable_saved_successfully">Timetable saved successfully.</string>
     <string name="firestore_save_failed">Could not save timetable.</string>
     <string name="firestore_read_failed">Could not read the existing timetable.</string>
+
+    <string name="where_is_my_teacher">WHERE IS MY TEACHER?</string>
+    <string name="check_full_week_availability">Check Full Week\'s Availability</string>
+    <string name="available_today">AVAILABLE TODAY</string>
+    <string name="today">TODAY</string>
+    <string name="request_meeting">REQUEST MEETING</string>
+
+    <string name="select_teacher_first">Please select a teacher first.</string>
+    <string name="teacher_directory_load_failed">Could not load teachers.</string>
+    <string name="schedule_load_failed">Could not load today\'s schedule.</string>
+    <string name="schedule_unavailable">Schedule unavailable</string>
+    <string name="location_unavailable">Location unavailable</string>
+    <string name="room_not_available">Room not available</string>
+
+    <string name="room_format">Room: %1$s</string>
+    <string name="until_format">Until %1$s</string>
+    <string name="next_class_at">Next class at %1$s</string>
+
+    <string name="available">AVAILABLE</string>
+    <string name="no_more_classes_today">NO MORE CLASSES TODAY</string>
+    <string name="no_scheduled_classes_today">No scheduled classes today.</string>
+
+    <string name="select_favourite_teachers">Select Favourite Teachers</string>
+    <string name="maximum_two_favourite_teachers">You can select a maximum of 2 teachers.</string>
+    <string name="favourite_teachers_saved">Favourite teachers saved.</string>
+    <string name="favourite_teachers_save_failed">Could not save favourite teachers.</string>
+
+    <string name="no_teachers_available">No teachers are currently available.</string>
+
+    <string name="room_unavailable">Room unavailable</string>
+
+    <string name="no_classes_today">No classes today</string>
+    <string name="teacher_no_classes_today">No scheduled classes today.</string>
+    <!-- Teacher timetable editor -->
+
+    <string name="teacher_timetable">Teacher Timetable</string>
+
+    <string name="timetable_edit_instruction">
+    Tap any timetable slot to view or edit it.
+</string>
+
+    <string name="monday">M</string>
+    <string name="tuesday">T</string>
+    <string name="wednesday">W</string>
+    <string name="thursday">Th</string>
+    <string name="friday">F</string>
+
+    <string name="edit_timetable_slot">Edit Timetable Slot</string>
+
+    <string name="day">Day</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+
+    <string name="subject">Subject</string>
+    <string name="enter_subject">Enter subject</string>
+
+    <string name="class_type">Class Type</string>
+    <string name="program">Program</string>
+    <string name="semester">Semester</string>
+    <string name="section">Section</string>
+    <string name="batch">Batch</string>
+
+    <string name="room">Room</string>
+    <string name="enter_room">Enter room</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="delete_slot">Delete Slot</string>
+    <string name="save_slot">Save Slot</string>
+
+    <string name="timetable_loaded">Timetable loaded.</string>
+    <string name="timetable_load_failed">Could not load timetable.</string>
+    <string name="profile_load_failed">Could not load teacher profile.</string>
+    <string name="teacher_code_not_found">Teacher code not found.</string>
+    <string name="slot_saved">Timetable slot saved.</string>
+    <string name="slot_deleted">Timetable slot deleted.</string>
+    <string name="save_failed">Could not save timetable slot.</string>
+    <string name="delete_failed">Could not delete timetable slot.</string>
+    <string name="no_schedule">No class scheduled.</string>
+
+    <string name="short_break">Short Break</string>
+    <string name="lunch_break">Lunch Break</string>
+
+    <string name="theory">THEORY</string>
+    <string name="lab">LAB</string>
+
+    <string name="none">None</string>
+    <string name="current_class_format">Current: %1$s</string>
+    <string name="next_class_format">Next: %1$s at %2$s</string>
+    <string name="next_class_time_format">%1$s - %2$s</string>
+
+    <string name="teacher_finished_for_today">Teacher has finished scheduled classes for today.</string>
 </resources>
