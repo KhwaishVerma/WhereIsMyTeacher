@@ -9,16 +9,18 @@
     android:background="#F7F7F7"
     android:fillViewport="true"
     android:scrollbars="none"
-    tools:context=".teacher_dashboard">
+    tools:context=".MainActivity7">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:paddingTop="24dp"
-        android:paddingBottom="30dp">
+        android:paddingBottom="32dp">
+
+        <!-- Back -->
 
         <TextView
             android:id="@+id/backButton"
@@ -32,30 +34,33 @@
             android:focusable="true"
             android:padding="4dp" />
 
+
+        <!-- Teacher Name -->
+
         <TextView
             android:id="@+id/textViewTeacherName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/s21"
+            android:layout_marginTop="22dp"
+            android:text="Teacher"
             android:textColor="#111111"
-            android:textSize="28sp"
+            android:textSize="27sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewTeacherDepartment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Computer Engineering"
-            android:textColor="#555555"
-            android:textSize="16sp" />
+
+        <!-- Department -->
+
+
+        <!-- Divider -->
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
             android:background="#D0D0D0" />
+
+
+        <!-- Title -->
 
         <TextView
             android:layout_width="match_parent"
@@ -66,19 +71,37 @@
             android:textSize="23sp"
             android:textStyle="bold" />
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="View when this teacher is available during the week."
+            android:text="View this teacher's complete weekly schedule."
             android:textColor="#666666"
             android:textSize="14sp" />
+
+
+        <!-- Loading -->
+
+        <TextView
+            android:id="@+id/loadingText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Loading timetable..."
+            android:textColor="#666666"
+            android:textSize="14sp" />
+
+
+        <!-- ============================== -->
+        <!-- MONDAY -->
+        <!-- ============================== -->
 
         <TextView
             android:id="@+id/mondayTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="22dp"
             android:text="Monday"
             android:textColor="#111111"
             android:textSize="19sp"
@@ -88,47 +111,22 @@
             android:id="@+id/mondayAvailability"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="10dp"
             android:background="#FFFFFF"
-            android:elevation="2dp">
-
-            <TextView
-                android:id="@+id/mondaySlot1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="09:00 AM - 10:00 AM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-            <TextView
-                android:id="@+id/mondaySlot3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="12:00 PM - 01:00 PM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
+            android:elevation="2dp" />
 
 
-            <TextView
-                android:id="@+id/mondaySlot5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="03:00 PM - 04:00 PM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-        </LinearLayout>
+        <!-- ============================== -->
+        <!-- TUESDAY -->
+        <!-- ============================== -->
 
         <TextView
             android:id="@+id/tuesdayTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="22dp"
             android:text="Tuesday"
             android:textColor="#111111"
             android:textSize="19sp"
@@ -138,39 +136,22 @@
             android:id="@+id/tuesdayAvailability"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="10dp"
             android:background="#FFFFFF"
-            android:elevation="2dp">
+            android:elevation="2dp" />
 
 
-            <TextView
-                android:id="@+id/tuesdaySlot2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="10:00 AM - 11:00 AM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-
-            <TextView
-                android:id="@+id/tuesdaySlot4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="01:00 PM - 03:00 PM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-        </LinearLayout>
+        <!-- ============================== -->
+        <!-- WEDNESDAY -->
+        <!-- ============================== -->
 
         <TextView
             android:id="@+id/wednesdayTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="22dp"
             android:text="Wednesday"
             android:textColor="#111111"
             android:textSize="19sp"
@@ -180,39 +161,22 @@
             android:id="@+id/wednesdayAvailability"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="10dp"
             android:background="#FFFFFF"
-            android:elevation="2dp">
-
-            <TextView
-                android:id="@+id/wednesdaySlot1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="09:00 AM - 11:00 AM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
+            android:elevation="2dp" />
 
 
-            <TextView
-                android:id="@+id/wednesdaySlot3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="01:00 PM - 02:00 PM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-
-        </LinearLayout>
+        <!-- ============================== -->
+        <!-- THURSDAY -->
+        <!-- ============================== -->
 
         <TextView
             android:id="@+id/thursdayTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="22dp"
             android:text="Thursday"
             android:textColor="#111111"
             android:textSize="19sp"
@@ -222,38 +186,22 @@
             android:id="@+id/thursdayAvailability"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="10dp"
             android:background="#FFFFFF"
-            android:elevation="2dp">
+            android:elevation="2dp" />
 
 
-            <TextView
-                android:id="@+id/thursdaySlot2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="10:00 AM - 12:00 PM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-            <TextView
-                android:id="@+id/thursdaySlot4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="02:00 PM - 04:00 PM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-        </LinearLayout>
+        <!-- ============================== -->
+        <!-- FRIDAY -->
+        <!-- ============================== -->
 
         <TextView
             android:id="@+id/fridayTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="22dp"
             android:text="Friday"
             android:textColor="#111111"
             android:textSize="19sp"
@@ -263,42 +211,11 @@
             android:id="@+id/fridayAvailability"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="10dp"
             android:background="#FFFFFF"
-            android:elevation="2dp">
-
-            <TextView
-                android:id="@+id/fridaySlot1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="09:00 AM - 10:00 AM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-
-            <TextView
-                android:id="@+id/fridaySlot3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="12:00 PM - 01:00 PM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-
-            <TextView
-                android:id="@+id/fridaySlot5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="03:00 PM - 04:00 PM    AVAILABLE"
-                android:textColor="#222222"
-                android:textSize="15sp"
-                android:padding="8dp" />
-
-        </LinearLayout>
+            android:elevation="2dp" />
 
     </LinearLayout>
 

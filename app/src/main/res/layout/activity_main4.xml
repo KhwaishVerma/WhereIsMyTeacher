@@ -62,16 +62,27 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
+        <!-- Full Name -->
+
         <TextView
-            android:id="@+id/teacherNamePreview"
+            android:id="@+id/teacherFullNameLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select a teacher code"
-            android:textSize="14sp"
-            android:textColor="#6B7280"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:layout_marginBottom="20dp" />
+            android:text="Full Name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#111827" />
+
+        <EditText
+            android:id="@+id/teacherFullName"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="Enter your full name (without Dr.)"
+            android:inputType="textCapWords"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp" />
 
         <!-- Faculty ID -->
 
@@ -106,27 +117,29 @@
             android:textStyle="bold"
             android:textColor="#111827" />
 
+        <!-- Department -->
+
         <EditText
             android:id="@+id/editTextText12"
             android:layout_width="match_parent"
             android:layout_height="55dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp"
             android:hint="@string/s14"
             android:inputType="textEmailAddress"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="18dp" />
-
-        <!-- Department -->
+            android:paddingEnd="16dp" />
 
         <TextView
             android:id="@+id/textView16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/s5"
+            android:text="@string/s8"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#111827" />
+
+        <!-- Designation -->
 
         <Spinner
             android:id="@+id/editTextText14"
@@ -137,13 +150,11 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
-        <!-- Designation -->
-
         <TextView
             android:id="@+id/textView21"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/s17"
+            android:text="@string/s15"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#111827" />
@@ -167,6 +178,17 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="#111827" />
+
+        <TextView
+            android:id="@+id/teacherNamePreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="Select a teacher code"
+            android:textColor="#6B7280"
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/editTextText16"

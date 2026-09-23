@@ -236,7 +236,6 @@ public class MainActivity6 extends AppCompatActivity {
                             "teacherName",
                             selectedTeacher.name
                     );
-
                     startActivity(intent);
                 }
         );
