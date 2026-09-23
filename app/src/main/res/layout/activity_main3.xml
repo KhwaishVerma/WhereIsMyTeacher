@@ -105,7 +105,24 @@
             android:id="@+id/textView13"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/s11"
+            android:text="Course"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/courseSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="18dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+        <TextView
+            android:id="@+id/yearLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Year"
             android:textSize="16sp"
             android:textStyle="bold" />
 

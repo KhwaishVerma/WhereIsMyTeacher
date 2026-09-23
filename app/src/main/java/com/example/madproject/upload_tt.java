@@ -1,851 +1,1097 @@
 package com.example.madproject;
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
+
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class upload_tt extends AppCompatActivity {
 
     // =========================================================
+    // FIREBASE
+    // =========================================================
+
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
+
+    private String teacherUid = "";
+    private String teacherCode = "";
+    private String teacherName = "";
+
+
+    // =========================================================
     // UI
     // =========================================================
 
-    private Button uploadButton;
-    private Button importButton;
-    private Button downloadButton;
+    private TextView teacherNameText;
+    private TextView teacherCodeText;
+    private TextView currentDayText;
+    private TextView timetableStatus;
 
-    private TextView fileNameText;
-    private TextView statusText;
-    private TextView jsonText;
+    private TableLayout timetableTable;
 
-    private TableLayout tableLayout;
-    private ProgressBar progressBar;
+    private ProgressBar timetableProgress;
 
+    private LinearLayout slotEditor;
 
-    // =========================================================
-    // FILE
-    // =========================================================
+    private EditText editorSubject;
+    private EditText editorRoom;
 
-    private Uri selectedFileUri;
+    private Spinner editorDaySpinner;
+    private Spinner editorStartTimeSpinner;
+    private Spinner editorEndTimeSpinner;
+    private Spinner editorTypeSpinner;
+    private Spinner editorProgramSpinner;
+    private Spinner editorSemesterSpinner;
+    private Spinner editorSectionSpinner;
+    private Spinner editorBatchSpinner;
 
-    private String selectedFileName = "";
+    private Button dayMonButton;
+    private Button dayTueButton;
+    private Button dayWedButton;
+    private Button dayThuButton;
+    private Button dayFriButton;
 
-    private String selectedFileType = "";
-
-
-    // =========================================================
-    // TABLE DATA
-    // =========================================================
-
-    private final ArrayList<ArrayList<String>> tableData =
-            new ArrayList<>();
-
-
-    // =========================================================
-    // JSON
-    // =========================================================
-
-    private JSONObject finalJson;
+    private Button cancelEditButton;
+    private Button deleteSlotButton;
+    private Button saveSlotButton;
 
 
     // =========================================================
-    // BACKGROUND THREAD
+    // DATA
     // =========================================================
 
-    private final ExecutorService executor =
-            Executors.newSingleThreadExecutor();
+    private final List<String> days = Arrays.asList(
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri"
+    );
+
+    private final List<String> dayDisplayNames = Arrays.asList(
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+    );
 
 
-    // =========================================================
-    // FILE PICKER
-    // =========================================================
+    /*
+     * Official institutional class slots.
+     *
+     * Breaks are intentionally NOT included.
+     */
 
-    private final ActivityResultLauncher<String[]> filePicker =
-            registerForActivityResult(
-                    new ActivityResultContracts.OpenDocument(),
-                    uri -> {
+    private final String[][] officialSlots = {
 
-                        if (uri == null) {
-                            return;
-                        }
+            {"09:00", "10:00"},
+            {"10:00", "11:00"},
+            {"11:10", "12:10"},
+            {"12:10", "13:10"},
+            {"14:10", "15:10"},
+            {"15:10", "16:10"}
 
-                        selectedFileUri = uri;
-
-                        selectedFileName =
-                                getFileName(uri);
-
-                        selectedFileType =
-                                detectFileType(
-                                        selectedFileName
-                                );
+    };
 
 
-                        fileNameText.setText(
-                                selectedFileName
-                        );
+    private String selectedDay = "Mon";
 
+    private DocumentSnapshot editingMasterSchedule = null;
 
-                        tableData.clear();
-
-                        tableLayout.removeAllViews();
-
-                        finalJson = null;
-
-                        jsonText.setText(
-                                "JSON output will appear here..."
-                        );
-
-                        downloadButton.setEnabled(
-                                false
-                        );
-
-
-                        if (
-                                selectedFileType.equals("CSV")
-                                        ||
-                                        selectedFileType.equals("XLS")
-                                        ||
-                                        selectedFileType.equals("XLSX")
-                        ) {
-
-                            importButton.setEnabled(
-                                    true
-                            );
-
-                            statusText.setText(
-                                    "Ready to import."
-                            );
-
-                        } else {
-
-                            importButton.setEnabled(
-                                    false
-                            );
-
-                            statusText.setText(
-                                    "Unsupported file. Please select CSV, XLS, or XLSX."
-                            );
-                        }
-                    }
-            );
-
-
-    // =========================================================
-    // SAVE JSON
-    // =========================================================
-
-    private final ActivityResultLauncher<Intent> saveJsonLauncher =
-            registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-
-                        if (
-                                result.getResultCode()
-                                        != RESULT_OK
-                                        ||
-                                        result.getData() == null
-                        ) {
-
-                            return;
-                        }
-
-
-                        Uri uri =
-                                result.getData()
-                                        .getData();
-
-
-                        if (uri != null) {
-
-                            saveJson(uri);
-                        }
-                    }
-            );
+    private String editingOverrideId = "";
 
 
     // =========================================================
     // ON CREATE
     // =========================================================
 
-    @SuppressLint("MissingInflatedId")
     @Override
-    protected void onCreate(
-            Bundle savedInstanceState
-    ) {
+    protected void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(
-                savedInstanceState
-        );
+        super.onCreate(savedInstanceState);
+
+        EdgeToEdge.enable(this);
 
         setContentView(
                 R.layout.activity_upload_tt
         );
 
 
-        // -----------------------------------------------------
-        // Find Views
-        // -----------------------------------------------------
-
-        uploadButton =
-                findViewById(
-                        R.id.uploadButton
-                );
-
-        importButton =
-                findViewById(
-                        R.id.ocrButton
-                );
-
-        downloadButton =
-                findViewById(
-                        R.id.downloadButton
-                );
-
-        fileNameText =
-                findViewById(
-                        R.id.fileNameText
-                );
-
-        statusText =
-                findViewById(
-                        R.id.statusText
-                );
-
-        jsonText =
-                findViewById(
-                        R.id.jsonText
-                );
-
-        tableLayout =
-                findViewById(
-                        R.id.ocrTable
-                );
-
-        progressBar =
-                findViewById(
-                        R.id.progressBar
-                );
-
-
-        importButton.setEnabled(
-                false
-        );
-
-        downloadButton.setEnabled(
-                false
-        );
-
-
-        // -----------------------------------------------------
-        // Select File
-        // -----------------------------------------------------
-
-        uploadButton.setOnClickListener(
-                v -> {
-
-                    filePicker.launch(
-                            new String[]{
-                                    "text/csv",
-                                    "text/comma-separated-values",
-                                    "application/vnd.ms-excel",
-                                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                            }
-                    );
-                }
-        );
-
-
-        // -----------------------------------------------------
-        // Import
-        // -----------------------------------------------------
-
-        importButton.setOnClickListener(
-                v -> {
-
-                    if (selectedFileUri == null) {
-
-                        Toast.makeText(
-                                this,
-                                "Please select a timetable file.",
-                                Toast.LENGTH_SHORT
-                        ).show();
-
-                        return;
-                    }
-
-
-                    importFile();
-                }
-        );
-
-
-        // -----------------------------------------------------
-        // Export JSON
-        // -----------------------------------------------------
-
-        downloadButton.setOnClickListener(
-                v -> {
-
-                    if (finalJson == null) {
-
-                        Toast.makeText(
-                                this,
-                                "Import a timetable first.",
-                                Toast.LENGTH_SHORT
-                        ).show();
-
-                        return;
-                    }
-
-
-                    Intent intent =
-                            new Intent(
-                                    Intent.ACTION_CREATE_DOCUMENT
-                            );
-
-
-                    intent.setType(
-                            "application/json"
-                    );
-
-
-                    intent.putExtra(
-                            Intent.EXTRA_TITLE,
-                            "timetable.json"
-                    );
-
-
-                    saveJsonLauncher.launch(
-                            intent
-                    );
-                }
-        );
-    }
-
-
-    // =========================================================
-    // IMPORT FILE
-    // =========================================================
-
-    private void importFile() {
-
-        importButton.setEnabled(
-                false
-        );
-
-        downloadButton.setEnabled(
-                false
-        );
-
-        progressBar.setVisibility(
-                View.VISIBLE
-        );
-
-        tableLayout.removeAllViews();
-
-        tableData.clear();
-
-        finalJson = null;
-
-
-        statusText.setText(
-                "Reading timetable..."
-        );
-
-
-        executor.execute(
-                () -> {
-
-                    try {
-
-                        if (
-                                selectedFileType.equals("CSV")
-                        ) {
-
-                            readCSV();
-
-                        } else if (
-                                selectedFileType.equals("XLS")
-                        ) {
-
-                            readExcel(
-                                    true
-                            );
-
-                        } else if (
-                                selectedFileType.equals("XLSX")
-                        ) {
-
-                            readExcel(
-                                    false
-                            );
-                        }
-
-
-                        displayTable();
-
-
-                    } catch (Exception e) {
-
-                        showError(
-                                "Import failed: " +
-                                        e.getMessage()
-                        );
-                    }
-                }
-        );
-    }
-
-
-    // =========================================================
-    // CSV
-    // =========================================================
-
-    private void readCSV()
-            throws Exception {
-
-        InputStream input =
-                getContentResolver()
-                        .openInputStream(
-                                selectedFileUri
+        View root =
+                findViewById(R.id.main);
+
+        if (root != null) {
+
+            ViewCompat.setOnApplyWindowInsetsListener(
+                    root,
+                    (v, insets) -> {
+
+                        Insets systemBars =
+                                insets.getInsets(
+                                        WindowInsetsCompat.Type.systemBars()
+                                );
+
+                        v.setPadding(
+                                systemBars.left,
+                                systemBars.top,
+                                systemBars.right,
+                                systemBars.bottom
                         );
 
-
-        if (input == null) {
-
-            throw new Exception(
-                    "Could not open CSV file."
+                        return insets;
+                    }
             );
         }
 
 
-        BufferedReader reader =
-                new BufferedReader(
-                        new InputStreamReader(
-                                input,
-                                StandardCharsets.UTF_8
-                        )
+        // =====================================================
+        // FIREBASE
+        // =====================================================
+
+        auth =
+                FirebaseAuth.getInstance();
+
+        db =
+                FirebaseFirestore.getInstance();
+
+
+        FirebaseUser currentUser =
+                auth.getCurrentUser();
+
+
+        if (currentUser == null) {
+
+            Toast.makeText(
+                    this,
+                    "Please login first.",
+                    Toast.LENGTH_LONG
+            ).show();
+
+            finish();
+
+            return;
+        }
+
+
+        teacherUid =
+                currentUser.getUid();
+
+
+        // =====================================================
+        // FIND VIEWS
+        // =====================================================
+
+        teacherNameText =
+                findViewById(
+                        R.id.teacherNameText
+                );
+
+        teacherCodeText =
+                findViewById(
+                        R.id.teacherCodeText
+                );
+
+        currentDayText =
+                findViewById(
+                        R.id.currentDayText
+                );
+
+        timetableTable =
+                findViewById(
+                        R.id.timetableTable
+                );
+
+        timetableProgress =
+                findViewById(
+                        R.id.timetableProgress
+                );
+
+        timetableStatus =
+                findViewById(
+                        R.id.timetableStatus
+                );
+
+        slotEditor =
+                findViewById(
+                        R.id.slotEditor
                 );
 
 
-        String line;
+        editorSubject =
+                findViewById(
+                        R.id.editorSubject
+                );
+
+        editorRoom =
+                findViewById(
+                        R.id.editorRoom
+                );
 
 
-        while (
-                (line = reader.readLine())
-                        != null
-        ) {
+        editorDaySpinner =
+                findViewById(
+                        R.id.editorDaySpinner
+                );
 
-            if (
-                    line.trim().isEmpty()
-            ) {
+        editorStartTimeSpinner =
+                findViewById(
+                        R.id.editorStartTimeSpinner
+                );
 
-                continue;
-            }
+        editorEndTimeSpinner =
+                findViewById(
+                        R.id.editorEndTimeSpinner
+                );
+
+        editorTypeSpinner =
+                findViewById(
+                        R.id.editorTypeSpinner
+                );
+
+        editorProgramSpinner =
+                findViewById(
+                        R.id.editorProgramSpinner
+                );
+
+        editorSemesterSpinner =
+                findViewById(
+                        R.id.editorSemesterSpinner
+                );
+
+        editorSectionSpinner =
+                findViewById(
+                        R.id.editorSectionSpinner
+                );
+
+        editorBatchSpinner =
+                findViewById(
+                        R.id.editorBatchSpinner
+                );
 
 
-            tableData.add(
-                    parseCSVLine(
-                            line
+        dayMonButton =
+                findViewById(
+                        R.id.dayMonButton
+                );
+
+        dayTueButton =
+                findViewById(
+                        R.id.dayTueButton
+                );
+
+        dayWedButton =
+                findViewById(
+                        R.id.dayWedButton
+                );
+
+        dayThuButton =
+                findViewById(
+                        R.id.dayThuButton
+                );
+
+        dayFriButton =
+                findViewById(
+                        R.id.dayFriButton
+                );
+
+
+        cancelEditButton =
+                findViewById(
+                        R.id.cancelEditButton
+                );
+
+        deleteSlotButton =
+                findViewById(
+                        R.id.deleteSlotButton
+                );
+
+        saveSlotButton =
+                findViewById(
+                        R.id.saveSlotButton
+                );
+
+
+        // =====================================================
+        // INITIALIZE SPINNERS
+        // =====================================================
+
+        setupSpinners();
+
+
+        // =====================================================
+        // DAY BUTTONS
+        // =====================================================
+
+        dayMonButton.setOnClickListener(
+                v -> selectDay("Mon")
+        );
+
+        dayTueButton.setOnClickListener(
+                v -> selectDay("Tue")
+        );
+
+        dayWedButton.setOnClickListener(
+                v -> selectDay("Wed")
+        );
+
+        dayThuButton.setOnClickListener(
+                v -> selectDay("Thu")
+        );
+
+        dayFriButton.setOnClickListener(
+                v -> selectDay("Fri")
+        );
+
+
+        // =====================================================
+        // EDITOR BUTTONS
+        // =====================================================
+
+        cancelEditButton.setOnClickListener(
+                v -> hideEditor()
+        );
+
+
+        saveSlotButton.setOnClickListener(
+                v -> saveSlot()
+        );
+
+
+        deleteSlotButton.setOnClickListener(
+                v -> deleteSlot()
+        );
+
+
+        // =====================================================
+        // LOAD PROFILE
+        // =====================================================
+
+        loadTeacherProfile();
+    }
+
+
+    // =========================================================
+    // LOAD TEACHER PROFILE
+    // =========================================================
+
+    private void loadTeacherProfile() {
+
+        db.collection("users")
+                .document(teacherUid)
+                .get()
+                .addOnSuccessListener(
+                        document -> {
+
+                            if (!document.exists()) {
+
+                                timetableStatus.setText(
+                                        getString(
+                                                R.string.profile_load_failed
+                                        )
+                                );
+
+                                return;
+                            }
+
+
+                            String name =
+                                    document.getString(
+                                            "name"
+                                    );
+
+                            String code =
+                                    document.getString(
+                                            "teacherCode"
+                                    );
+
+
+                            teacherName =
+                                    name == null
+                                            ? ""
+                                            : name.trim();
+
+
+                            teacherCode =
+                                    code == null
+                                            ? ""
+                                            : code.trim()
+                                            .toUpperCase();
+
+
+                            if (!teacherName.isEmpty()) {
+
+                                teacherNameText.setText(
+                                        teacherName
+                                );
+                            }
+
+
+                            if (!teacherCode.isEmpty()) {
+
+                                teacherCodeText.setText(
+                                        "Teacher Code: " +
+                                                teacherCode
+                                );
+
+                                loadTimetable();
+
+                            } else {
+
+                                teacherCodeText.setText(
+                                        getString(
+                                                R.string.teacher_code_not_found
+                                        )
+                                );
+
+                                timetableStatus.setText(
+                                        getString(
+                                                R.string.teacher_code_not_found
+                                        )
+                                );
+                            }
+                        }
+                )
+                .addOnFailureListener(
+                        e -> {
+
+                            timetableStatus.setText(
+                                    getString(
+                                            R.string.profile_load_failed
+                                    )
+                            );
+
+                            Toast.makeText(
+                                    this,
+                                    e.getMessage(),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                );
+    }
+
+
+    // =========================================================
+    // LOAD TIMETABLE
+    // =========================================================
+
+    private void loadTimetable() {
+
+        timetableProgress.setVisibility(
+                View.VISIBLE
+        );
+
+        timetableStatus.setText(
+                getString(
+                        R.string.loading
+                )
+        );
+
+
+        db.collection("masterSchedules")
+                .whereArrayContains(
+                        "teacherCodes",
+                        teacherCode
+                )
+                .get()
+                .addOnSuccessListener(
+                        snapshot -> {
+
+                            timetableProgress.setVisibility(
+                                    View.GONE
+                            );
+
+                            timetableStatus.setText(
+                                    getString(
+                                            R.string.timetable_loaded
+                                    )
+                            );
+
+                            selectDay(
+                                    selectedDay
+                            );
+                        }
+                )
+                .addOnFailureListener(
+                        e -> {
+
+                            timetableProgress.setVisibility(
+                                    View.GONE
+                            );
+
+                            timetableStatus.setText(
+                                    getString(
+                                            R.string.timetable_load_failed
+                                    )
+                            );
+
+                            Toast.makeText(
+                                    this,
+                                    e.getMessage(),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                );
+    }
+
+
+    // =========================================================
+    // SELECT DAY
+    // =========================================================
+
+    private void selectDay(
+            String day
+    ) {
+
+        selectedDay =
+                day;
+
+
+        currentDayText.setText(
+                getDayDisplayName(day)
+        );
+
+
+        highlightSelectedDay(
+                day
+        );
+
+
+        loadDaySchedule(
+                day
+        );
+    }
+
+
+    // =========================================================
+    // LOAD DAY SCHEDULE
+    // =========================================================
+
+    private void loadDaySchedule(
+            String day
+    ) {
+
+        timetableTable.removeAllViews();
+
+
+        timetableTable.addView(
+                createTableHeader()
+        );
+
+
+        db.collection("masterSchedules")
+                .whereArrayContains(
+                        "teacherCodes",
+                        teacherCode
+                )
+                .whereEqualTo(
+                        "day",
+                        day
+                )
+                .get()
+                .addOnSuccessListener(
+                        snapshot -> {
+
+                            List<DocumentSnapshot> documents =
+                                    new ArrayList<>(
+                                            snapshot.getDocuments()
+                                    );
+
+
+                            Collections.sort(
+                                    documents,
+                                    Comparator.comparingInt(
+                                            document ->
+                                                    timeToMinutes(
+                                                            document.getString(
+                                                                    "startTime"
+                                                            )
+                                                    )
+                                    )
+                            );
+
+
+                            for (
+                                    String[] slot :
+                                    officialSlots
+                            ) {
+
+                                addSlotRow(
+                                        day,
+                                        slot[0],
+                                        slot[1],
+                                        documents
+                                );
+                            }
+                        }
+                )
+                .addOnFailureListener(
+                        e -> {
+
+                            timetableStatus.setText(
+                                    getString(
+                                            R.string.timetable_load_failed
+                                    )
+                            );
+                        }
+                );
+    }
+
+
+    // =========================================================
+    // TABLE HEADER
+    // =========================================================
+
+    private TableRow createTableHeader() {
+
+        TableRow row =
+                new TableRow(this);
+
+        row.setBackgroundColor(
+                Color.parseColor(
+                        "#E5E7EB"
+                )
+        );
+
+
+        row.addView(
+                createCell(
+                        "Time",
+                        true
+                )
+        );
+
+
+        row.addView(
+                createCell(
+                        "Class",
+                        true
+                )
+        );
+
+
+        return row;
+    }
+
+
+    // =========================================================
+    // ADD SLOT ROW
+    // =========================================================
+
+    private void addSlotRow(
+            String day,
+            String startTime,
+            String endTime,
+            List<DocumentSnapshot> documents
+    ) {
+
+        TableRow row =
+                new TableRow(this);
+
+
+        row.setPadding(
+                0,
+                1,
+                0,
+                1
+        );
+
+
+        TextView timeCell =
+                createCell(
+                        startTime +
+                                " - " +
+                                endTime,
+                        false
+                );
+
+
+        row.addView(
+                timeCell
+        );
+
+
+        DocumentSnapshot matching =
+                findMatchingSchedule(
+                        documents,
+                        startTime,
+                        endTime
+                );
+
+
+        TextView classCell;
+
+
+        if (matching != null) {
+
+            classCell =
+                    createClassCell(
+                            matching
+                    );
+
+        } else {
+
+            classCell =
+                    createCell(
+                            getString(
+                                    R.string.no_schedule
+                            ),
+                            false
+                    );
+
+            classCell.setTextColor(
+                    Color.parseColor(
+                            "#6B7280"
                     )
             );
         }
 
 
-        reader.close();
-    }
-
-
-    // =========================================================
-    // CSV PARSER
-    // =========================================================
-
-    private ArrayList<String> parseCSVLine(
-            String line
-    ) {
-
-        ArrayList<String> values =
-                new ArrayList<>();
-
-
-        StringBuilder current =
-                new StringBuilder();
-
-
-        boolean quoted =
-                false;
-
-
-        for (
-                int i = 0;
-                i < line.length();
-                i++
-        ) {
-
-            char c =
-                    line.charAt(i);
-
-
-            if (c == '"') {
-
-                if (
-                        quoted
-                                &&
-                                i + 1 < line.length()
-                                &&
-                                line.charAt(i + 1) == '"'
-                ) {
-
-                    current.append(
-                            '"'
-                    );
-
-                    i++;
-
-                } else {
-
-                    quoted =
-                            !quoted;
-                }
-
-
-            } else if (
-                    c == ','
-                            &&
-                            !quoted
-            ) {
-
-                values.add(
-                        current
-                                .toString()
-                                .trim()
-                );
-
-                current.setLength(
-                        0
-                );
-
-
-            } else {
-
-                current.append(
-                        c
-                );
-            }
-        }
-
-
-        values.add(
-                current
-                        .toString()
-                        .trim()
+        row.addView(
+                classCell
         );
 
 
-        return values;
-    }
+        final DocumentSnapshot selected =
+                matching;
 
 
-    // =========================================================
-    // EXCEL
-    // =========================================================
+        row.setOnClickListener(
+                v -> {
 
-    private void readExcel(
-            boolean oldFormat
-    )
-            throws Exception {
+                    if (selected != null) {
 
-        InputStream input =
-                getContentResolver()
-                        .openInputStream(
-                                selectedFileUri
+                        openEditor(
+                                selected
                         );
 
+                    } else {
 
-        if (input == null) {
+                        openNewSlotEditor(
+                                day,
+                                startTime,
+                                endTime
+                        );
+                    }
+                }
+        );
 
-            throw new Exception(
-                    "Could not open Excel file."
+
+        timetableTable.addView(
+                row
+        );
+
+
+        // -----------------------------------------------------
+        // BREAK ROWS
+        // -----------------------------------------------------
+
+        if (
+                endTime.equals("11:00")
+        ) {
+
+            addBreakRow(
+                    getString(
+                            R.string.short_break
+                    ),
+                    "11:00",
+                    "11:10"
             );
         }
 
 
-        Workbook workbook;
-
-
-        if (oldFormat) {
-
-            workbook =
-                    new HSSFWorkbook(
-                            input
-                    );
-
-        } else {
-
-            workbook =
-                    new XSSFWorkbook(
-                            input
-                    );
-        }
-
-
-        Sheet sheet =
-                workbook.getSheetAt(
-                        0
-                );
-
-
-        DataFormatter formatter =
-                new DataFormatter();
-
-
-        for (
-                Row excelRow :
-                sheet
+        if (
+                endTime.equals("13:10")
         ) {
 
-            ArrayList<String> row =
-                    new ArrayList<>();
-
-
-            int first =
-                    excelRow
-                            .getFirstCellNum();
-
-
-            int last =
-                    excelRow
-                            .getLastCellNum();
-
-
-            if (
-                    first < 0
-                            ||
-                            last < 0
-            ) {
-
-                continue;
-            }
-
-
-            for (
-                    int c = first;
-                    c < last;
-                    c++
-            ) {
-
-                Cell cell =
-                        excelRow.getCell(
-                                c
-                        );
-
-
-                String value =
-                        cell == null
-                                ? ""
-                                : formatter
-                                .formatCellValue(
-                                        cell
-                                );
-
-
-                row.add(
-                        value.trim()
-                );
-            }
-
-
-            if (
-                    !row.isEmpty()
-            ) {
-
-                tableData.add(
-                        row
-                );
-            }
+            addBreakRow(
+                    getString(
+                            R.string.lunch_break
+                    ),
+                    "13:10",
+                    "14:10"
+            );
         }
-
-
-        workbook.close();
-
-        input.close();
     }
 
 
     // =========================================================
-    // DISPLAY TABLE
+    // BREAK ROW
     // =========================================================
 
-    private void displayTable() {
+    private void addBreakRow(
+            String title,
+            String start,
+            String end
+    ) {
 
-        runOnUiThread(
-                () -> {
-
-                    progressBar.setVisibility(
-                            View.GONE
-                    );
-
-
-                    tableLayout.removeAllViews();
+        TableRow row =
+                new TableRow(this);
 
 
-                    if (
-                            tableData.isEmpty()
-                    ) {
-
-                        statusText.setText(
-                                "No table data found."
-                        );
-
-                        importButton.setEnabled(
-                                true
-                        );
-
-                        return;
-                    }
+        row.setBackgroundColor(
+                Color.parseColor(
+                        "#F3F4F6"
+                )
+        );
 
 
-                    int maxColumns =
-                            0;
+        TextView time =
+                createCell(
+                        start + " - " + end,
+                        false
+                );
 
 
-                    for (
-                            ArrayList<String> row :
-                            tableData
-                    ) {
-
-                        maxColumns =
-                                Math.max(
-                                        maxColumns,
-                                        row.size()
-                                );
-                    }
+        TextView breakText =
+                createCell(
+                        title,
+                        false
+                );
 
 
-                    // -------------------------------------------------
-                    // Build actual spreadsheet grid
-                    // -------------------------------------------------
-
-                    for (
-                            int r = 0;
-                            r < tableData.size();
-                            r++
-                    ) {
-
-                        TableRow tableRow =
-                                new TableRow(
-                                        this
-                                );
+        breakText.setGravity(
+                Gravity.CENTER
+        );
 
 
-                        ArrayList<String> row =
-                                tableData.get(
-                                        r
-                                );
+        breakText.setTypeface(
+                null,
+                Typeface.BOLD
+        );
 
 
-                        for (
-                                int c = 0;
-                                c < maxColumns;
-                                c++
-                        ) {
-
-                            String value =
-                                    c < row.size()
-                                            ? row.get(c)
-                                            : "";
+        breakText.setTextColor(
+                Color.parseColor(
+                        "#6B7280"
+                )
+        );
 
 
-                            tableRow.addView(
-                                    createCell(
-                                            value,
-                                            r == 0
-                                    )
-                            );
-                        }
+        row.addView(
+                time
+        );
+
+        row.addView(
+                breakText
+        );
 
 
-                        tableLayout.addView(
-                                tableRow
-                        );
-                    }
-
-
-                    // -------------------------------------------------
-                    // JSON
-                    // -------------------------------------------------
-
-                    finalJson =
-                            generateJSON();
-
-
-                    jsonText.setText(
-                            prettyJSON(
-                                    finalJson
-                            )
-                    );
-
-
-                    downloadButton.setEnabled(
-                            true
-                    );
-
-
-                    importButton.setEnabled(
-                            true
-                    );
-
-
-                    statusText.setText(
-                            "Imported " +
-                                    tableData.size() +
-                                    " rows × " +
-                                    maxColumns +
-                                    " columns."
-                    );
-                }
+        timetableTable.addView(
+                row
         );
     }
 
 
     // =========================================================
-    // CELL
+    // FIND MATCHING SCHEDULE
+    // =========================================================
+
+    private DocumentSnapshot findMatchingSchedule(
+            List<DocumentSnapshot> documents,
+            String start,
+            String end
+    ) {
+
+        for (
+                DocumentSnapshot document :
+                documents
+        ) {
+
+            String documentStart =
+                    document.getString(
+                            "startTime"
+                    );
+
+            String documentEnd =
+                    document.getString(
+                            "endTime"
+                    );
+
+
+            if (
+                    normalizeTime(documentStart)
+                            .equals(
+                                    normalizeTime(start)
+                            )
+                            &&
+                            normalizeTime(documentEnd)
+                                    .equals(
+                                            normalizeTime(end)
+                                    )
+            ) {
+
+                return document;
+            }
+        }
+
+
+        return null;
+    }
+
+
+    // =========================================================
+    // CLASS CELL
+    // =========================================================
+
+    private TextView createClassCell(
+            DocumentSnapshot document
+    ) {
+
+        String subject =
+                safeString(
+                        document,
+                        "subject",
+                        "Class"
+                );
+
+        String type =
+                safeString(
+                        document,
+                        "type",
+                        ""
+                );
+
+        String program =
+                safeString(
+                        document,
+                        "program",
+                        ""
+                );
+
+        String section =
+                safeString(
+                        document,
+                        "section",
+                        ""
+                );
+
+        String room =
+                safeString(
+                        document,
+                        "room",
+                        ""
+                );
+
+
+        StringBuilder text =
+                new StringBuilder();
+
+
+        text.append(
+                subject
+        );
+
+
+        if (!type.isEmpty()) {
+
+            text.append(
+                    "\n"
+            );
+
+            text.append(
+                    type
+            );
+        }
+
+
+        if (!program.isEmpty()) {
+
+            text.append(
+                    " • "
+            );
+
+            text.append(
+                    program
+            );
+        }
+
+
+        if (!section.isEmpty()) {
+
+            text.append(
+                    " • Sec "
+            );
+
+            text.append(
+                    section
+            );
+        }
+
+
+        if (!room.isEmpty()) {
+
+            text.append(
+                    "\n"
+            );
+
+            text.append(
+                    room
+            );
+        }
+
+
+        TextView cell =
+                createCell(
+                        text.toString(),
+                        false
+                );
+
+
+        cell.setTextColor(
+                Color.parseColor(
+                        "#111827"
+                )
+        );
+
+
+        cell.setBackgroundColor(
+                Color.parseColor(
+                        "#FFFFFF"
+                )
+        );
+
+
+        return cell;
+    }
+
+
+    // =========================================================
+    // CREATE TABLE CELL
     // =========================================================
 
     private TextView createCell(
@@ -854,19 +1100,7 @@ public class upload_tt extends AppCompatActivity {
     ) {
 
         TextView cell =
-                new TextView(
-                        this
-                );
-
-
-        if (
-                text == null
-                        ||
-                        text.trim().isEmpty()
-        ) {
-
-            text = "-";
-        }
+                new TextView(this);
 
 
         cell.setText(
@@ -875,7 +1109,16 @@ public class upload_tt extends AppCompatActivity {
 
 
         cell.setTextSize(
-                header ? 13 : 12
+                header
+                        ? 14
+                        : 13
+        );
+
+
+        cell.setTextColor(
+                Color.parseColor(
+                        "#111827"
+                )
         );
 
 
@@ -895,23 +1138,9 @@ public class upload_tt extends AppCompatActivity {
 
 
         cell.setMinWidth(
-                180
-        );
-
-
-        cell.setTextColor(
-                Color.parseColor(
-                        "#111827"
-                )
-        );
-
-
-        cell.setBackgroundColor(
                 header
-                        ? Color.parseColor(
-                        "#E5E7EB"
-                )
-                        : Color.WHITE
+                        ? 150
+                        : 150
         );
 
 
@@ -949,789 +1178,1106 @@ public class upload_tt extends AppCompatActivity {
 
 
     // =========================================================
-    // GENERATE JSON
-    // =========================================================
-    private JSONObject parseTimetableCell(
-            String time,
-            String content
-    ) {
-
-        JSONObject result =
-                new JSONObject();
-
-        try {
-
-            result.put(
-                    "time",
-                    time
-            );
-
-            // -----------------------------------------------------
-            // Empty cell
-            // -----------------------------------------------------
-
-            if (
-                    content == null ||
-                            content.trim().isEmpty() ||
-                            content.equals("-")
-            ) {
-
-                result.put(
-                        "subject",
-                        null
-                );
-
-                result.put(
-                        "type",
-                        "FREE"
-                );
-
-                result.put(
-                        "batch",
-                        null
-                );
-
-                result.put(
-                        "faculty",
-                        null
-                );
-
-                result.put(
-                        "room",
-                        null
-                );
-
-                return result;
-            }
-
-
-            String value =
-                    content.trim();
-
-
-            // -----------------------------------------------------
-            // BREAK
-            // -----------------------------------------------------
-
-            String upper =
-                    value.toUpperCase(
-                            Locale.US
-                    );
-
-            if (
-                    upper.equals("SHORT BREAK") ||
-                            upper.equals("BREAK")
-            ) {
-
-                result.put(
-                        "subject",
-                        value
-                );
-
-                result.put(
-                        "type",
-                        "BREAK"
-                );
-
-                result.put(
-                        "batch",
-                        null
-                );
-
-                result.put(
-                        "faculty",
-                        null
-                );
-
-                result.put(
-                        "room",
-                        null
-                );
-
-                return result;
-            }
-
-
-            // -----------------------------------------------------
-            // LUNCH
-            // -----------------------------------------------------
-
-            if (
-                    upper.equals("LUNCH")
-            ) {
-
-                result.put(
-                        "subject",
-                        "LUNCH"
-                );
-
-                result.put(
-                        "type",
-                        "BREAK"
-                );
-
-                result.put(
-                        "batch",
-                        null
-                );
-
-                result.put(
-                        "faculty",
-                        null
-                );
-
-                result.put(
-                        "room",
-                        null
-                );
-
-                return result;
-            }
-
-
-            // -----------------------------------------------------
-            // Split the imported cell
-            //
-            // Example:
-            //
-            // Artificial Intelligence |
-            // Lab |
-            // Batch 01 |
-            // VK |
-            // CL 206
-            // -----------------------------------------------------
-
-            String[] parts =
-                    value.split(
-                            "\\|"
-                    );
-
-
-            ArrayList<String> cleanParts =
-                    new ArrayList<>();
-
-
-            for (String part :
-                    parts) {
-
-                String cleaned =
-                        part.trim();
-
-                if (!cleaned.isEmpty()) {
-
-                    cleanParts.add(
-                            cleaned
-                    );
-                }
-            }
-
-
-            // -----------------------------------------------------
-            // SUBJECT
-            // -----------------------------------------------------
-
-            String subject =
-                    cleanParts.size() > 0
-                            ? cleanParts.get(0)
-                            : null;
-
-
-            // -----------------------------------------------------
-            // TYPE
-            // -----------------------------------------------------
-
-            String type =
-                    null;
-
-
-            for (String part :
-                    cleanParts) {
-
-                String p =
-                        part.toUpperCase(
-                                Locale.US
-                        );
-
-                if (
-                        p.equals("THEORY") ||
-                                p.equals("LAB")
-                ) {
-
-                    type = p;
-
-                    break;
-                }
-            }
-
-
-            // -----------------------------------------------------
-            // BATCH
-            // -----------------------------------------------------
-
-            String batch =
-                    null;
-
-
-            for (String part :
-                    cleanParts) {
-
-                String p =
-                        part.trim();
-
-
-                if (
-                        p.toLowerCase(
-                                Locale.US
-                        ).startsWith(
-                                "batch"
-                        )
-                ) {
-
-                    batch = p;
-
-                    break;
-                }
-            }
-
-
-            // -----------------------------------------------------
-            // ROOM
-            // -----------------------------------------------------
-
-            String room =
-                    null;
-
-
-            for (String part :
-                    cleanParts) {
-
-                String p =
-                        part.trim()
-                                .toUpperCase(
-                                        Locale.US
-                                );
-
-
-                /*
-                 * Known room/lab formats:
-                 *
-                 * CR 311
-                 * CL 206
-                 * CC 402
-                 * LL 201
-                 */
-
-                if (
-                        p.matches(
-                                "(CR|CL|CC|LL)\\s*\\d+"
-                        )
-                ) {
-
-                    room = part.trim();
-
-                    break;
-                }
-            }
-
-
-            // -----------------------------------------------------
-            // FACULTY
-            // -----------------------------------------------------
-
-            String faculty =
-                    null;
-
-
-            /*
-             * Faculty is normally the remaining
-             * short token after removing:
-             *
-             * subject
-             * type
-             * batch
-             * room
-             */
-
-            for (String part :
-                    cleanParts) {
-
-                String p =
-                        part.trim();
-
-
-                if (
-                        p.equals(subject)
-                ) {
-                    continue;
-                }
-
-
-                if (
-                        type != null &&
-                                p.equalsIgnoreCase(type)
-                ) {
-                    continue;
-                }
-
-
-                if (
-                        batch != null &&
-                                p.equalsIgnoreCase(batch)
-                ) {
-                    continue;
-                }
-
-
-                if (
-                        room != null &&
-                                p.equalsIgnoreCase(room)
-                ) {
-                    continue;
-                }
-
-
-                /*
-                 * Faculty codes in your timetable
-                 * are short identifiers such as:
-                 *
-                 * JP
-                 * VK
-                 * RD
-                 * PS
-                 * DS
-                 * NiG
-                 * RGM
-                 * PST
-                 * AS
-                 */
-
-                if (
-                        p.matches(
-                                "[A-Za-z]{1,5}"
-                        )
-                ) {
-
-                    faculty = p;
-
-                    break;
-                }
-            }
-
-
-            // -----------------------------------------------------
-            // DEFAULT TYPE
-            // -----------------------------------------------------
-
-            if (type == null) {
-
-                type = "OTHER";
-            }
-
-
-            // -----------------------------------------------------
-            // FINAL OBJECT
-            // -----------------------------------------------------
-
-            result.put(
-                    "subject",
-                    subject
-            );
-
-            result.put(
-                    "type",
-                    type
-            );
-
-            result.put(
-                    "batch",
-                    batch
-            );
-
-            result.put(
-                    "faculty",
-                    faculty
-            );
-
-            result.put(
-                    "room",
-                    room
-            );
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-
-
-        return result;
-    }
-    private JSONObject generateJSON() {
-
-        JSONObject root = new JSONObject();
-
-        try {
-
-            root.put(
-                    "type",
-                    "timetable"
-            );
-
-            root.put(
-                    "sourceFile",
-                    selectedFileName
-            );
-
-            root.put(
-                    "sourceType",
-                    selectedFileType
-            );
-
-            JSONArray schedule =
-                    new JSONArray();
-
-            if (tableData.isEmpty()) {
-                root.put("schedule", schedule);
-                return root;
-            }
-
-            // -----------------------------------------------------
-            // First row = column headers
-            // -----------------------------------------------------
-
-            ArrayList<String> headers =
-                    tableData.get(0);
-
-            // -----------------------------------------------------
-            // Every remaining row = one day
-            // -----------------------------------------------------
-
-            for (int r = 1;
-                 r < tableData.size();
-                 r++) {
-
-                ArrayList<String> row =
-                        tableData.get(r);
-
-                if (row.isEmpty()) {
-                    continue;
-                }
-
-                JSONObject dayObject =
-                        new JSONObject();
-
-                // First column = Day
-
-                String day =
-                        row.get(0)
-                                .trim();
-
-                dayObject.put(
-                        "day",
-                        day
-                );
-
-                JSONArray slots =
-                        new JSONArray();
-
-                // -------------------------------------------------
-                // Remaining columns = time slots
-                // -------------------------------------------------
-
-                for (int c = 1;
-                     c < headers.size();
-                     c++) {
-
-                    String time =
-                            headers.get(c)
-                                    .trim();
-
-                    String content = "";
-
-                    if (c < row.size()) {
-
-                        content =
-                                row.get(c)
-                                        .trim();
-                    }
-
-                    JSONObject slot =
-                            parseTimetableCell(
-                                    time,
-                                    content
-                            );
-
-                    slots.put(
-                            slot
-                    );
-                }
-
-                dayObject.put(
-                        "slots",
-                        slots
-                );
-
-                schedule.put(
-                        dayObject
-                );
-            }
-
-            root.put(
-                    "schedule",
-                    schedule
-            );
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-
-        return root;
-    }
-
-
-    // =========================================================
-    // FILE TYPE
+    // SETUP SPINNERS
     // =========================================================
 
-    private String detectFileType(
-            String filename
-    ) {
+    private void setupSpinners() {
 
-        if (filename == null) {
-
-            return "UNKNOWN";
-        }
+        setSpinner(
+                editorDaySpinner,
+                dayDisplayNames
+        );
 
 
-        String name =
-                filename.toLowerCase(
-                        Locale.US
-                );
+        List<String> starts =
+                new ArrayList<>();
+
+        List<String> ends =
+                new ArrayList<>();
 
 
-        if (
-                name.endsWith(".csv")
+        for (
+                String[] slot :
+                officialSlots
         ) {
 
-            return "CSV";
-        }
-
-
-        if (
-                name.endsWith(".xlsx")
-        ) {
-
-            return "XLSX";
-        }
-
-
-        if (
-                name.endsWith(".xls")
-        ) {
-
-            return "XLS";
-        }
-
-
-        return "UNKNOWN";
-    }
-
-
-    // =========================================================
-    // FILE NAME
-    // =========================================================
-
-    private String getFileName(
-            Uri uri
-    ) {
-
-        String result =
-                null;
-
-
-        try (
-                android.database.Cursor cursor =
-                        getContentResolver()
-                                .query(
-                                        uri,
-                                        null,
-                                        null,
-                                        null,
-                                        null
-                                )
-        ) {
-
-            if (
-                    cursor != null
-                            &&
-                            cursor.moveToFirst()
-            ) {
-
-                int index =
-                        cursor.getColumnIndex(
-                                android.provider.OpenableColumns.DISPLAY_NAME
-                        );
-
-
-                if (
-                        index >= 0
-                ) {
-
-                    result =
-                            cursor.getString(
-                                    index
-                            );
-                }
-            }
-
-        } catch (Exception ignored) {
-        }
-
-
-        if (
-                result == null
-        ) {
-
-            result =
-                    uri.getLastPathSegment();
-        }
-
-
-        return result != null
-                ? result
-                : "timetable";
-    }
-
-
-    // =========================================================
-    // PRETTY JSON
-    // =========================================================
-
-    private String prettyJSON(
-            JSONObject object
-    ) {
-
-        if (object == null) {
-
-            return "No JSON generated.";
-        }
-
-
-        try {
-
-            return object.toString(
-                    4
+            starts.add(
+                    slot[0]
             );
 
-        } catch (Exception e) {
-
-            return object.toString();
-        }
-    }
-
-
-    // =========================================================
-    // SAVE JSON
-    // =========================================================
-
-    private void saveJson(
-            Uri uri
-    ) {
-
-        try {
-
-            OutputStream output =
-                    getContentResolver()
-                            .openOutputStream(
-                                    uri
-                            );
-
-
-            if (output == null) {
-
-                throw new Exception(
-                        "Could not open destination."
-                );
-            }
-
-
-            output.write(
-                    prettyJSON(
-                            finalJson
-                    )
-                            .getBytes(
-                                    StandardCharsets.UTF_8
-                            )
+            ends.add(
+                    slot[1]
             );
-
-
-            output.close();
-
-
-            Toast.makeText(
-                    this,
-                    "JSON exported successfully.",
-                    Toast.LENGTH_LONG
-            ).show();
-
-
-        } catch (Exception e) {
-
-            Toast.makeText(
-                    this,
-                    "Export failed: " +
-                            e.getMessage(),
-                    Toast.LENGTH_LONG
-            ).show();
         }
-    }
 
 
-    // =========================================================
-    // ERROR
-    // =========================================================
+        setSpinner(
+                editorStartTimeSpinner,
+                starts
+        );
 
-    private void showError(
-            String message
-    ) {
-
-        runOnUiThread(
-                () -> {
-
-                    progressBar.setVisibility(
-                            View.GONE
-                    );
+        setSpinner(
+                editorEndTimeSpinner,
+                ends
+        );
 
 
-                    statusText.setText(
-                            message
-                    );
+        setSpinner(
+                editorTypeSpinner,
+                Arrays.asList(
+                        "THEORY",
+                        "LAB"
+                )
+        );
 
 
-                    importButton.setEnabled(
-                            true
-                    );
+        setSpinner(
+                editorProgramSpinner,
+                Arrays.asList(
+                        "CE",
+                        "AIDS",
+                        "MT",
+                        "MBA",
+                        "CA"
+                )
+        );
 
 
-                    Toast.makeText(
-                            this,
-                            message,
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
+        List<String> semesters =
+                new ArrayList<>();
+
+        semesters.add(
+                "None"
+        );
+
+        for (
+                int i = 1;
+                i <= 10;
+                i++
+        ) {
+
+            semesters.add(
+                    String.valueOf(i)
+            );
+        }
+
+
+        setSpinner(
+                editorSemesterSpinner,
+                semesters
+        );
+
+
+        setSpinner(
+                editorSectionSpinner,
+                Arrays.asList(
+                        "None",
+                        "A",
+                        "B",
+                        "AB"
+                )
+        );
+
+
+        setSpinner(
+                editorBatchSpinner,
+                Arrays.asList(
+                        "None",
+                        "A1",
+                        "A2",
+                        "B1",
+                        "B2",
+                        "C1",
+                        "C2"
+                )
         );
     }
 
 
     // =========================================================
-    // CLEANUP
+    // SPINNER HELPER
     // =========================================================
 
-    @Override
-    protected void onDestroy() {
+    private void setSpinner(
+            Spinner spinner,
+            List<String> values
+    ) {
 
-        super.onDestroy();
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        values
+                );
 
-        executor.shutdown();
+
+        adapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item
+        );
+
+
+        spinner.setAdapter(
+                adapter
+        );
+    }
+
+
+    // =========================================================
+    // OPEN EXISTING EDITOR
+    // =========================================================
+
+    private void openEditor(
+            DocumentSnapshot document
+    ) {
+
+        editingMasterSchedule =
+                document;
+
+        editingOverrideId =
+                "";
+
+
+        String day =
+                safeString(
+                        document,
+                        "day",
+                        selectedDay
+                );
+
+
+        String start =
+                safeString(
+                        document,
+                        "startTime",
+                        "09:00"
+                );
+
+
+        String end =
+                safeString(
+                        document,
+                        "endTime",
+                        "10:00"
+                );
+
+
+        String subject =
+                safeString(
+                        document,
+                        "subject",
+                        ""
+                );
+
+
+        String type =
+                safeString(
+                        document,
+                        "type",
+                        "THEORY"
+                );
+
+
+        String program =
+                safeString(
+                        document,
+                        "program",
+                        "CE"
+                );
+
+
+        String semester =
+                getSemesterString(
+                        document
+                );
+
+
+        String section =
+                safeString(
+                        document,
+                        "section",
+                        "None"
+                );
+
+
+        String batch =
+                safeString(
+                        document,
+                        "batch",
+                        "None"
+                );
+
+
+        String room =
+                safeString(
+                        document,
+                        "room",
+                        ""
+                );
+
+
+        setSpinnerValue(
+                editorDaySpinner,
+                getDayDisplayName(day)
+        );
+
+        setSpinnerValue(
+                editorStartTimeSpinner,
+                start
+        );
+
+        setSpinnerValue(
+                editorEndTimeSpinner,
+                end
+        );
+
+        setSpinnerValue(
+                editorTypeSpinner,
+                type
+        );
+
+        setSpinnerValue(
+                editorProgramSpinner,
+                program
+        );
+
+        setSpinnerValue(
+                editorSemesterSpinner,
+                semester
+        );
+
+        setSpinnerValue(
+                editorSectionSpinner,
+                section
+        );
+
+        setSpinnerValue(
+                editorBatchSpinner,
+                batch
+        );
+
+
+        editorSubject.setText(
+                subject
+        );
+
+        editorRoom.setText(
+                room
+        );
+
+
+        deleteSlotButton.setVisibility(
+                View.VISIBLE
+        );
+
+
+        slotEditor.setVisibility(
+                View.VISIBLE
+        );
+    }
+
+
+    // =========================================================
+    // OPEN NEW SLOT
+    // =========================================================
+
+    private void openNewSlotEditor(
+            String day,
+            String start,
+            String end
+    ) {
+
+        editingMasterSchedule =
+                null;
+
+        editingOverrideId =
+                "";
+
+
+        setSpinnerValue(
+                editorDaySpinner,
+                getDayDisplayName(day)
+        );
+
+        setSpinnerValue(
+                editorStartTimeSpinner,
+                start
+        );
+
+        setSpinnerValue(
+                editorEndTimeSpinner,
+                end
+        );
+
+
+        editorSubject.setText(
+                ""
+        );
+
+        editorRoom.setText(
+                ""
+        );
+
+
+        setSpinnerValue(
+                editorTypeSpinner,
+                "THEORY"
+        );
+
+        setSpinnerValue(
+                editorProgramSpinner,
+                "CE"
+        );
+
+        setSpinnerValue(
+                editorSemesterSpinner,
+                "None"
+        );
+
+        setSpinnerValue(
+                editorSectionSpinner,
+                "None"
+        );
+
+        setSpinnerValue(
+                editorBatchSpinner,
+                "None"
+        );
+
+
+        deleteSlotButton.setVisibility(
+                View.GONE
+        );
+
+
+        slotEditor.setVisibility(
+                View.VISIBLE
+        );
+    }
+
+
+    // =========================================================
+    // SAVE SLOT
+    // =========================================================
+
+    private void saveSlot() {
+
+        if (
+                teacherCode == null
+                        ||
+                        teacherCode.isEmpty()
+        ) {
+
+            return;
+        }
+
+
+        String day =
+                spinnerDayToCode(
+                        editorDaySpinner
+                                .getSelectedItem()
+                                .toString()
+                );
+
+
+        String start =
+                editorStartTimeSpinner
+                        .getSelectedItem()
+                        .toString();
+
+
+        String end =
+                editorEndTimeSpinner
+                        .getSelectedItem()
+                        .toString();
+
+
+        String subject =
+                editorSubject
+                        .getText()
+                        .toString()
+                        .trim();
+
+
+        String type =
+                editorTypeSpinner
+                        .getSelectedItem()
+                        .toString();
+
+
+        String program =
+                editorProgramSpinner
+                        .getSelectedItem()
+                        .toString();
+
+
+        String semesterText =
+                editorSemesterSpinner
+                        .getSelectedItem()
+                        .toString();
+
+
+        String section =
+                editorSectionSpinner
+                        .getSelectedItem()
+                        .toString();
+
+
+        String batch =
+                editorBatchSpinner
+                        .getSelectedItem()
+                        .toString();
+
+
+        String room =
+                editorRoom
+                        .getText()
+                        .toString()
+                        .trim();
+
+
+        if (
+                subject.isEmpty()
+        ) {
+
+            editorSubject.setError(
+                    getString(
+                            R.string.enter_subject
+                    )
+            );
+
+            return;
+        }
+
+
+        Map<String, Object> data =
+                new HashMap<>();
+
+
+        data.put(
+                "teacherCode",
+                teacherCode
+        );
+
+        data.put(
+                "day",
+                day
+        );
+
+        data.put(
+                "startTime",
+                start
+        );
+
+        data.put(
+                "endTime",
+                end
+        );
+
+        data.put(
+                "action",
+                "UPDATE"
+        );
+
+        data.put(
+                "subject",
+                subject
+        );
+
+        data.put(
+                "type",
+                type
+        );
+
+        data.put(
+                "program",
+                program
+        );
+
+        data.put(
+                "section",
+                section.equals("None")
+                        ? ""
+                        : section
+        );
+
+        data.put(
+                "batch",
+                batch.equals("None")
+                        ? ""
+                        : batch
+        );
+
+        data.put(
+                "room",
+                room
+        );
+
+        data.put(
+                "updatedAt",
+                Timestamp.now()
+        );
+
+        data.put(
+                "updatedBy",
+                teacherUid
+        );
+
+
+        if (
+                !semesterText.equals("None")
+        ) {
+
+            try {
+
+                data.put(
+                        "semester",
+                        Integer.parseInt(
+                                semesterText
+                        )
+                );
+
+            } catch (Exception ignored) {
+
+                data.put(
+                        "semester",
+                        null
+                );
+            }
+
+        } else {
+
+            data.put(
+                    "semester",
+                    null
+            );
+        }
+
+
+        /*
+         * If this is an existing master timetable class,
+         * preserve its schedule ID so we know which
+         * master record this override belongs to.
+         */
+
+        if (
+                editingMasterSchedule != null
+        ) {
+
+            data.put(
+                    "masterScheduleId",
+                    editingMasterSchedule.getId()
+            );
+        }
+
+
+        String documentId;
+
+
+        if (
+                !editingOverrideId.isEmpty()
+        ) {
+
+            documentId =
+                    editingOverrideId;
+
+        } else {
+
+            documentId =
+                    day +
+                            "_" +
+                            start.replace(
+                                    ":",
+                                    ""
+                            );
+        }
+
+
+        db.collection(
+                        "teacherScheduleOverrides"
+                )
+                .document(
+                        teacherCode
+                )
+                .collection(
+                        "entries"
+                )
+                .document(
+                        documentId
+                )
+                .set(
+                        data
+                )
+                .addOnSuccessListener(
+                        unused -> {
+
+                            Toast.makeText(
+                                    this,
+                                    getString(
+                                            R.string.slot_saved
+                                    ),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+
+                            hideEditor();
+
+                            loadDaySchedule(
+                                    selectedDay
+                            );
+                        }
+                )
+                .addOnFailureListener(
+                        e -> {
+
+                            Toast.makeText(
+                                    this,
+                                    getString(
+                                            R.string.save_failed
+                                    ),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                );
+    }
+
+
+    // =========================================================
+    // DELETE SLOT
+    // =========================================================
+
+    private void deleteSlot() {
+
+        if (
+                editingMasterSchedule == null
+        ) {
+
+            return;
+        }
+
+
+        String day =
+                safeString(
+                        editingMasterSchedule,
+                        "day",
+                        selectedDay
+                );
+
+
+        String start =
+                safeString(
+                        editingMasterSchedule,
+                        "startTime",
+                        "09:00"
+                );
+
+
+        String overrideId =
+                day +
+                        "_" +
+                        start.replace(
+                                ":",
+                                ""
+                        );
+
+
+        Map<String, Object> data =
+                new HashMap<>();
+
+
+        data.put(
+                "teacherCode",
+                teacherCode
+        );
+
+        data.put(
+                "day",
+                day
+        );
+
+        data.put(
+                "startTime",
+                start
+        );
+
+        data.put(
+                "action",
+                "DELETE"
+        );
+
+        data.put(
+                "masterScheduleId",
+                editingMasterSchedule.getId()
+        );
+
+        data.put(
+                "updatedAt",
+                Timestamp.now()
+        );
+
+        data.put(
+                "updatedBy",
+                teacherUid
+        );
+
+
+        db.collection(
+                        "teacherScheduleOverrides"
+                )
+                .document(
+                        teacherCode
+                )
+                .collection(
+                        "entries"
+                )
+                .document(
+                        overrideId
+                )
+                .set(
+                        data
+                )
+                .addOnSuccessListener(
+                        unused -> {
+
+                            Toast.makeText(
+                                    this,
+                                    getString(
+                                            R.string.slot_deleted
+                                    ),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+
+                            hideEditor();
+
+                            loadDaySchedule(
+                                    selectedDay
+                            );
+                        }
+                )
+                .addOnFailureListener(
+                        e -> {
+
+                            Toast.makeText(
+                                    this,
+                                    getString(
+                                            R.string.delete_failed
+                                    ),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                );
+    }
+
+
+    // =========================================================
+    // HIDE EDITOR
+    // =========================================================
+
+    private void hideEditor() {
+
+        slotEditor.setVisibility(
+                View.GONE
+        );
+
+        editingMasterSchedule =
+                null;
+
+        editingOverrideId =
+                "";
+    }
+
+
+    // =========================================================
+    // HIGHLIGHT DAY
+    // =========================================================
+
+    private void highlightSelectedDay(
+            String day
+    ) {
+
+        Button[] buttons = {
+                dayMonButton,
+                dayTueButton,
+                dayWedButton,
+                dayThuButton,
+                dayFriButton
+        };
+
+
+        for (
+                Button button :
+                buttons
+        ) {
+
+            button.setAlpha(
+                    0.55f
+            );
+        }
+
+
+        switch (day) {
+
+            case "Mon":
+                dayMonButton.setAlpha(1f);
+                break;
+
+            case "Tue":
+                dayTueButton.setAlpha(1f);
+                break;
+
+            case "Wed":
+                dayWedButton.setAlpha(1f);
+                break;
+
+            case "Thu":
+                dayThuButton.setAlpha(1f);
+                break;
+
+            case "Fri":
+                dayFriButton.setAlpha(1f);
+                break;
+        }
+    }
+
+
+    // =========================================================
+    // SPINNER VALUE
+    // =========================================================
+
+    private void setSpinnerValue(
+            Spinner spinner,
+            String value
+    ) {
+
+        ArrayAdapter adapter =
+                (ArrayAdapter)
+                        spinner.getAdapter();
+
+
+        if (adapter == null) {
+
+            return;
+        }
+
+
+        int position =
+                adapter.getPosition(
+                        value
+                );
+
+
+        if (position >= 0) {
+
+            spinner.setSelection(
+                    position
+            );
+        }
+    }
+
+
+    // =========================================================
+    // SAFE FIRESTORE STRING
+    // =========================================================
+
+    private String safeString(
+            DocumentSnapshot document,
+            String field,
+            String fallback
+    ) {
+
+        Object value =
+                document.get(field);
+
+
+        if (value == null) {
+
+            return fallback;
+        }
+
+
+        String result =
+                String.valueOf(
+                        value
+                ).trim();
+
+
+        return result.isEmpty()
+                ? fallback
+                : result;
+    }
+
+
+    // =========================================================
+    // SEMESTER
+    // =========================================================
+
+    private String getSemesterString(
+            DocumentSnapshot document
+    ) {
+
+        Object value =
+                document.get(
+                        "semester"
+                );
+
+
+        if (value == null) {
+
+            return "None";
+        }
+
+
+        if (
+                value instanceof Number
+        ) {
+
+            return String.valueOf(
+                    ((Number) value).intValue()
+            );
+        }
+
+
+        String text =
+                String.valueOf(
+                        value
+                ).trim();
+
+
+        return text.isEmpty()
+                ? "None"
+                : text;
+    }
+
+
+    // =========================================================
+    // NORMALIZE TIME
+    // =========================================================
+
+    private String normalizeTime(
+            String value
+    ) {
+
+        if (value == null) {
+
+            return "";
+        }
+
+
+        return value
+                .trim()
+                .replace(
+                        " ",
+                        ""
+                )
+                .toLowerCase();
+    }
+
+
+    // =========================================================
+    // TIME → MINUTES
+    // =========================================================
+
+    private int timeToMinutes(
+            String value
+    ) {
+
+        if (
+                value == null
+                        ||
+                        value.trim().isEmpty()
+        ) {
+
+            return Integer.MAX_VALUE;
+        }
+
+
+        try {
+
+            String[] parts =
+                    value
+                            .trim()
+                            .split(":");
+
+
+            int hour =
+                    Integer.parseInt(
+                            parts[0]
+                    );
+
+
+            int minute =
+                    Integer.parseInt(
+                            parts[1]
+                    );
+
+
+            return hour * 60 + minute;
+
+        } catch (Exception e) {
+
+            return Integer.MAX_VALUE;
+        }
+    }
+
+
+    // =========================================================
+    // DAY DISPLAY
+    // =========================================================
+
+    private String getDayDisplayName(
+            String day
+    ) {
+
+        switch (day) {
+
+            case "Mon":
+                return "Monday";
+
+            case "Tue":
+                return "Tuesday";
+
+            case "Wed":
+                return "Wednesday";
+
+            case "Thu":
+                return "Thursday";
+
+            case "Fri":
+                return "Friday";
+
+            default:
+                return day;
+        }
+    }
+
+
+    // =========================================================
+    // DISPLAY DAY → CODE
+    // =========================================================
+
+    private String spinnerDayToCode(
+            String value
+    ) {
+
+        switch (value) {
+
+            case "Monday":
+                return "Mon";
+
+            case "Tuesday":
+                return "Tue";
+
+            case "Wednesday":
+                return "Wed";
+
+            case "Thursday":
+                return "Thu";
+
+            case "Friday":
+                return "Fri";
+
+            default:
+                return value;
+        }
     }
 }

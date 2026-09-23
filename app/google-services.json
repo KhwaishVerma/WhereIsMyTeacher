@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "132217040557",
+    "project_id": "whereismyteacher-4a3dd",
+    "storage_bucket": "whereismyteacher-4a3dd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:132217040557:android:613d4beeb012824b406024",
+        "android_client_info": {
+          "package_name": "com.example.madproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD23rwKPSHDKmNhMxnujuWBOSBjpr3ddI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

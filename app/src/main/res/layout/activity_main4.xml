@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:fitsSystemWindows="true"
+    android:background="#F6F7FB"
     tools:context=".MainActivity4">
 
     <LinearLayout
@@ -17,6 +19,8 @@
         android:paddingTop="35dp"
         android:paddingBottom="35dp">
 
+        <!-- Header -->
+
         <TextView
             android:id="@+id/textView24"
             android:layout_width="match_parent"
@@ -25,26 +29,51 @@
             android:text="@string/s12"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:layout_marginBottom="35dp" />
+            android:textColor="#111827"
+            android:layout_marginBottom="8dp" />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/teacherRegistrationSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/s5"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:gravity="center"
+            android:text="Register using your assigned teacher code"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:layout_marginBottom="30dp" />
 
-        <EditText
-            android:id="@+id/editTextText10"
+        <!-- Teacher Code -->
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Teacher Code"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#111827" />
+
+        <Spinner
+            android:id="@+id/editTextText13"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:hint="@string/s13"
-            android:inputType="text"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
             android:layout_marginTop="6dp"
-            android:layout_marginBottom="18dp" />
+            android:layout_marginBottom="8dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+        <TextView
+            android:id="@+id/teacherNamePreview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select a teacher code"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Faculty ID -->
 
         <TextView
             android:id="@+id/textView17"
@@ -52,7 +81,8 @@
             android:layout_height="wrap_content"
             android:text="@string/s19"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#111827" />
 
         <EditText
             android:id="@+id/editTextText11"
@@ -65,13 +95,16 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="18dp" />
 
+        <!-- Email -->
+
         <TextView
             android:id="@+id/textView18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/s7"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#111827" />
 
         <EditText
             android:id="@+id/editTextText12"
@@ -84,30 +117,16 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="18dp" />
 
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/s8"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/editTextText13"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="18dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp" />
+        <!-- Department -->
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/textView16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/s15"
+            android:text="@string/s5"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#111827" />
 
         <Spinner
             android:id="@+id/editTextText14"
@@ -118,24 +137,27 @@
             android:paddingStart="12dp"
             android:paddingEnd="12dp" />
 
+        <!-- Designation -->
+
         <TextView
             android:id="@+id/textView21"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/s17"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#111827" />
 
-        <EditText
+        <Spinner
             android:id="@+id/editTextText15"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:hint="@string/s18"
-            android:inputType="text"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
             android:layout_marginTop="6dp"
-            android:layout_marginBottom="18dp" />
+            android:layout_marginBottom="18dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+        <!-- Password -->
 
         <TextView
             android:id="@+id/textView22"
@@ -143,7 +165,8 @@
             android:layout_height="wrap_content"
             android:text="@string/s9"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#111827" />
 
         <EditText
             android:id="@+id/editTextText16"
@@ -156,13 +179,16 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="18dp" />
 
+        <!-- Confirm Password -->
+
         <TextView
             android:id="@+id/textView23"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/s10"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#111827" />
 
         <EditText
             android:id="@+id/editTextText17"
@@ -175,12 +201,15 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="30dp" />
 
+        <!-- Register -->
+
         <Button
             android:id="@+id/button7"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:text="@string/b6"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 
