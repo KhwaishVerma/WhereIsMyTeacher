@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:hint="@string/username"
-            android:inputType="text"
+            android:inputType="textEmailAddress"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:layout_marginTop="45dp" />
@@ -57,22 +57,29 @@
             android:paddingEnd="16dp"
             android:layout_marginTop="16dp" />
 
+        <!-- Forgot Password -->
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/forgot_password"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp" />
+
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:text="@string/b1"
             android:textSize="15sp"
-            android:layout_marginTop="30dp" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/sub1"
-            android:textSize="14sp"
             android:layout_marginTop="18dp" />
+
 
         <TextView
             android:id="@+id/textView3"

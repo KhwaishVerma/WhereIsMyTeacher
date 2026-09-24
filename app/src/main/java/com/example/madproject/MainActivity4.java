@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,16 +19,26 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MainActivity4 extends AppCompatActivity {
 
+    // =====================================================
+    // VIEWS
+    // =====================================================
+
+    private EditText teacherFullName;
     private EditText facultyId;
     private EditText email;
     private EditText password;
@@ -41,10 +52,21 @@ public class MainActivity4 extends AppCompatActivity {
 
     private Button registerButton;
 
+
+    // =====================================================
+    // FIREBASE
+    // =====================================================
+
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
-    private final List<String> teacherCodes = new ArrayList<>();
+
+    // =====================================================
+    // TEACHER DIRECTORY DATA
+    // =====================================================
+
+    private final List<String> teacherCodes =
+            new ArrayList<>();
 
     private final Map<String, String> teacherNames =
             new HashMap<>();
@@ -52,14 +74,23 @@ public class MainActivity4 extends AppCompatActivity {
     private boolean teacherDirectoryLoaded = false;
 
 
+    // =====================================================
+    // ACTIVITY CREATED
+    // =====================================================
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         EdgeToEdge.enable(this);
 
         setContentView(R.layout.activity_main4);
 
+
+        // =================================================
+        // EDGE TO EDGE
+        // =================================================
 
         View root = findViewById(R.id.main);
 
@@ -84,9 +115,9 @@ public class MainActivity4 extends AppCompatActivity {
         );
 
 
-        // -------------------------------------------------
-        // Firebase
-        // -------------------------------------------------
+        // =================================================
+        // FIREBASE
+        // =================================================
 
         auth =
                 FirebaseAuth.getInstance();
@@ -95,9 +126,14 @@ public class MainActivity4 extends AppCompatActivity {
                 FirebaseFirestore.getInstance();
 
 
-        // -------------------------------------------------
-        // Fields
-        // -------------------------------------------------
+        // =================================================
+        // FIND VIEWS
+        // =================================================
+
+        teacherFullName =
+                findViewById(
+                        R.id.teacherFullName
+                );
 
         facultyId =
                 findViewById(
@@ -145,35 +181,45 @@ public class MainActivity4 extends AppCompatActivity {
                 );
 
 
-        // -------------------------------------------------
-        // Initial state
-        // -------------------------------------------------
+        // =================================================
+        // INITIAL STATE
+        // =================================================
 
         registerButton.setEnabled(false);
 
+
+        // =================================================
+        // SPINNERS
+        // =================================================
 
         setupDepartmentSpinner();
 
         setupDesignationSpinner();
 
+
+        // =================================================
+        // LOAD TEACHER DIRECTORY
+        // =================================================
+
         loadTeacherDirectory();
 
 
-        // -------------------------------------------------
-        // Teacher code selection
-        // -------------------------------------------------
+        // =================================================
+        // TEACHER CODE SELECTION
+        // =================================================
 
         teacherCodeSpinner.setOnItemSelectedListener(
-                new android.widget.AdapterView.OnItemSelectedListener() {
+                new AdapterView.OnItemSelectedListener() {
 
                     @Override
                     public void onItemSelected(
-                            android.widget.AdapterView<?> parent,
+                            AdapterView<?> parent,
                             View view,
                             int position,
                             long id
                     ) {
 
+                        // First item is placeholder
                         if (
                                 position == 0 ||
                                         position >= teacherCodes.size()
@@ -197,28 +243,39 @@ public class MainActivity4 extends AppCompatActivity {
                                 );
 
 
+                        // -------------------------------------
+                        // Show existing directory name
+                        // -------------------------------------
+
                         if (
                                 selectedName != null &&
                                         !selectedName.trim().isEmpty()
                         ) {
 
                             teacherNamePreview.setText(
-                                    "Teacher: " +
+                                    "Directory name: " +
                                             selectedName
                             );
 
                         } else {
 
                             teacherNamePreview.setText(
-                                    "Teacher name unavailable"
+                                    "Directory name unavailable"
                             );
                         }
+
+
+                        // -------------------------------------
+                        // Clear manual name field
+                        // -------------------------------------
+
+                        teacherFullName.setText("");
                     }
 
 
                     @Override
                     public void onNothingSelected(
-                            android.widget.AdapterView<?> parent
+                            AdapterView<?> parent
                     ) {
 
                         teacherNamePreview.setText(
@@ -228,6 +285,10 @@ public class MainActivity4 extends AppCompatActivity {
                 }
         );
 
+
+        // =================================================
+        // REGISTER BUTTON
+        // =================================================
 
         registerButton.setOnClickListener(
                 v -> registerTeacher()
@@ -245,12 +306,12 @@ public class MainActivity4 extends AppCompatActivity {
 
         registerButton.setEnabled(false);
 
-
         teacherCodes.clear();
 
         teacherNames.clear();
 
 
+        // Placeholder
         teacherCodes.add(
                 "Select Teacher Code"
         );
@@ -265,9 +326,13 @@ public class MainActivity4 extends AppCompatActivity {
                 .addOnSuccessListener(
                         querySnapshot -> {
 
+                            // ---------------------------------
+                            // Read teacher directory
+                            // ---------------------------------
+
                             for (
-                                    DocumentSnapshot document
-                                    : querySnapshot
+                                    DocumentSnapshot document :
+                                    querySnapshot
                             ) {
 
                                 String code =
@@ -292,7 +357,9 @@ public class MainActivity4 extends AppCompatActivity {
 
                                 code =
                                         code.trim()
-                                                .toUpperCase();
+                                                .toUpperCase(
+                                                        Locale.US
+                                                );
 
 
                                 teacherCodes.add(
@@ -310,7 +377,7 @@ public class MainActivity4 extends AppCompatActivity {
 
 
                             // ---------------------------------
-                            // Sort codes alphabetically
+                            // Sort teacher codes
                             // ---------------------------------
 
                             if (
@@ -325,7 +392,8 @@ public class MainActivity4 extends AppCompatActivity {
                                                 )
                                         );
 
-                                java.util.Collections.sort(
+
+                                Collections.sort(
                                         actualCodes
                                 );
 
@@ -341,6 +409,10 @@ public class MainActivity4 extends AppCompatActivity {
                                 );
                             }
 
+
+                            // ---------------------------------
+                            // Spinner adapter
+                            // ---------------------------------
 
                             ArrayAdapter<String> adapter =
                                     new ArrayAdapter<>(
@@ -362,6 +434,10 @@ public class MainActivity4 extends AppCompatActivity {
 
                             teacherDirectoryLoaded = true;
 
+
+                            // ---------------------------------
+                            // Enable registration
+                            // ---------------------------------
 
                             if (
                                     teacherCodes.size() > 1
@@ -504,6 +580,10 @@ public class MainActivity4 extends AppCompatActivity {
 
     private void registerTeacher() {
 
+        // =================================================
+        // CHECK DIRECTORY
+        // =================================================
+
         if (!teacherDirectoryLoaded) {
 
             Toast.makeText(
@@ -516,9 +596,9 @@ public class MainActivity4 extends AppCompatActivity {
         }
 
 
-        // -------------------------------------------------
-        // Selected teacher code
-        // -------------------------------------------------
+        // =================================================
+        // GET SELECTED TEACHER CODE
+        // =================================================
 
         int teacherCodePosition =
                 teacherCodeSpinner.getSelectedItemPosition();
@@ -545,30 +625,80 @@ public class MainActivity4 extends AppCompatActivity {
                 );
 
 
-        String teacherName =
-                teacherNames.get(
-                        teacherCode
-                );
+        // =================================================
+        // GET FULL NAME
+        // =================================================
+
+        String enteredName =
+                teacherFullName
+                        .getText()
+                        .toString()
+                        .trim();
 
 
-        if (
-                teacherName == null ||
-                        teacherName.trim().isEmpty()
-        ) {
+        if (enteredName.isEmpty()) {
 
-            Toast.makeText(
-                    this,
-                    "Teacher information could not be found.",
-                    Toast.LENGTH_SHORT
-            ).show();
+            teacherFullName.setError(
+                    "Enter your full name"
+            );
+
+            teacherFullName.requestFocus();
 
             return;
         }
 
 
-        // -------------------------------------------------
-        // Other fields
-        // -------------------------------------------------
+        // =================================================
+        // NORMALIZE NAME
+        // =================================================
+        //
+        // Teacher enters:
+        //
+        // Pushpanjay Sharma
+        //
+        // We store:
+        //
+        // Dr. Pushpanjay Sharma
+        //
+        // If teacher enters:
+        //
+        // Dr Pushpanjay Sharma
+        //
+        // We still store:
+        //
+        // Dr. Pushpanjay Sharma
+        //
+        // =================================================
+
+        String cleanName =
+                enteredName
+                        .trim()
+                        .replaceAll(
+                                "(?i)^dr\\.?\\s*",
+                                ""
+                        )
+                        .trim();
+
+
+        if (cleanName.isEmpty()) {
+
+            teacherFullName.setError(
+                    "Enter your full name"
+            );
+
+            teacherFullName.requestFocus();
+
+            return;
+        }
+
+
+        String teacherName =
+                "Dr. " + cleanName;
+
+
+        // =================================================
+        // OTHER FIELDS
+        // =================================================
 
         String teacherFacultyId =
                 facultyId
@@ -608,13 +738,11 @@ public class MainActivity4 extends AppCompatActivity {
                         .toString();
 
 
-        // -------------------------------------------------
-        // Validation
-        // -------------------------------------------------
+        // =================================================
+        // VALIDATION
+        // =================================================
 
-        if (
-                teacherFacultyId.isEmpty()
-        ) {
+        if (teacherFacultyId.isEmpty()) {
 
             facultyId.setError(
                     "Enter your faculty ID"
@@ -703,16 +831,16 @@ public class MainActivity4 extends AppCompatActivity {
         }
 
 
-        // -------------------------------------------------
-        // Disable button
-        // -------------------------------------------------
+        // =================================================
+        // DISABLE REGISTER BUTTON
+        // =================================================
 
         registerButton.setEnabled(false);
 
 
-        // -------------------------------------------------
-        // Firebase Authentication
-        // -------------------------------------------------
+        // =================================================
+        // CREATE FIREBASE AUTH ACCOUNT
+        // =================================================
 
         auth.createUserWithEmailAndPassword(
                         teacherEmail,
@@ -745,10 +873,15 @@ public class MainActivity4 extends AppCompatActivity {
                             }
 
 
-                            if (
-                                    auth.getCurrentUser()
-                                            == null
-                            ) {
+                            // =================================
+                            // GET AUTH USER
+                            // =================================
+
+                            FirebaseUser currentUser =
+                                    auth.getCurrentUser();
+
+
+                            if (currentUser == null) {
 
                                 registerButton.setEnabled(
                                         true
@@ -765,13 +898,12 @@ public class MainActivity4 extends AppCompatActivity {
 
 
                             String uid =
-                                    auth.getCurrentUser()
-                                            .getUid();
+                                    currentUser.getUid();
 
 
-                            // ---------------------------------
-                            // User document
-                            // ---------------------------------
+                            // =================================
+                            // USER DOCUMENT
+                            // =================================
 
                             Map<String, Object> teacherData =
                                     new HashMap<>();
@@ -821,14 +953,13 @@ public class MainActivity4 extends AppCompatActivity {
 
                             teacherData.put(
                                     "createdAt",
-                                    com.google.firebase.firestore.FieldValue
-                                            .serverTimestamp()
+                                    FieldValue.serverTimestamp()
                             );
 
 
-                            // ---------------------------------
-                            // Save user
-                            // ---------------------------------
+                            // =================================
+                            // SAVE USERS/{UID}
+                            // =================================
 
                             db.collection("users")
                                     .document(uid)
@@ -836,32 +967,14 @@ public class MainActivity4 extends AppCompatActivity {
                                     .addOnSuccessListener(
                                             unused -> {
 
-                                                Toast.makeText(
-                                                        MainActivity4.this,
-                                                        "Registration successful!",
-                                                        Toast.LENGTH_SHORT
-                                                ).show();
+                                                // =================================
+                                                // UPDATE TEACHER DIRECTORY
+                                                // =================================
 
-
-                                                Intent intent =
-                                                        new Intent(
-                                                                MainActivity4.this,
-                                                                MainActivity.class
-                                                        );
-
-
-                                                intent.setFlags(
-                                                        Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                                                Intent.FLAG_ACTIVITY_NEW_TASK |
-                                                                Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                updateTeacherDirectory(
+                                                        teacherCode,
+                                                        teacherName
                                                 );
-
-
-                                                startActivity(
-                                                        intent
-                                                );
-
-                                                finish();
                                             }
                                     )
                                     .addOnFailureListener(
@@ -880,6 +993,118 @@ public class MainActivity4 extends AppCompatActivity {
                                                 ).show();
                                             }
                                     );
+                        }
+                );
+    }
+
+
+    // =====================================================
+    // UPDATE TEACHER DIRECTORY
+    // =====================================================
+    //
+    // teacherDirectory/{teacherCode}
+    //
+    // Example:
+    //
+    // teacherDirectory/PS
+    //
+    // {
+    //     teacherCode: "PS",
+    //     name: "Dr. Pushpanjay Sharma",
+    //     active: true
+    // }
+    //
+    // =====================================================
+
+    private void updateTeacherDirectory(
+            String teacherCode,
+            String teacherName
+    ) {
+
+        Map<String, Object> directoryUpdate =
+                new HashMap<>();
+
+
+        directoryUpdate.put(
+                "teacherCode",
+                teacherCode
+        );
+
+
+        directoryUpdate.put(
+                "name",
+                teacherName
+        );
+
+
+        directoryUpdate.put(
+                "updatedAt",
+                FieldValue.serverTimestamp()
+        );
+
+
+        db.collection("teacherDirectory")
+                .document(teacherCode)
+                .set(
+                        directoryUpdate,
+                        SetOptions.merge()
+                )
+                .addOnSuccessListener(
+                        unused -> {
+
+                            // =================================
+                            // SUCCESS
+                            // =================================
+
+                            Toast.makeText(
+                                    MainActivity4.this,
+                                    "Registration successful!",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+
+
+                            // =================================
+                            // GO TO LOGIN
+                            // =================================
+
+                            Intent intent =
+                                    new Intent(
+                                            MainActivity4.this,
+                                            MainActivity.class
+                                    );
+
+
+                            intent.setFlags(
+                                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                            Intent.FLAG_ACTIVITY_NEW_TASK |
+                                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            );
+
+
+                            startActivity(intent);
+
+                            finish();
+                        }
+                )
+                .addOnFailureListener(
+                        e -> {
+
+                            // =================================
+                            // USER ACCOUNT EXISTS BUT DIRECTORY
+                            // UPDATE FAILED
+                            // =================================
+
+                            registerButton.setEnabled(
+                                    true
+                            );
+
+
+                            Toast.makeText(
+                                    MainActivity4.this,
+                                    "Account created, but teacher directory could not be updated: " +
+                                            e.getMessage(),
+                                    Toast.LENGTH_LONG
+                            ).show();
                         }
                 );
     }

@@ -201,7 +201,7 @@ public class MainActivity6 extends AppCompatActivity {
 
 
         // ==================================================
-        // FULL WEEK
+        // FULL WEEK AVAILABILITY
         // ==================================================
 
         availabilityButton.setOnClickListener(
@@ -227,6 +227,9 @@ public class MainActivity6 extends AppCompatActivity {
                                     MainActivity7.class
                             );
 
+                    /*
+                     * Teacher is identified ONLY by teacherCode.
+                     */
                     intent.putExtra(
                             "teacherCode",
                             selectedTeacher.teacherCode
@@ -269,6 +272,13 @@ public class MainActivity6 extends AppCompatActivity {
                                     request_meeting.class
                             );
 
+                    /*
+                     * IMPORTANT:
+                     *
+                     * NO teacherUid.
+                     *
+                     * teacherCode is the teacher identifier.
+                     */
                     intent.putExtra(
                             "teacherCode",
                             selectedTeacher.teacherCode
@@ -288,10 +298,6 @@ public class MainActivity6 extends AppCompatActivity {
     // ======================================================
     // LOAD TEACHER DIRECTORY
     // ======================================================
-
-// ======================================================
-// LOAD TEACHER DIRECTORY
-// ======================================================
 
     private void loadTeacherDirectory() {
 
@@ -320,6 +326,21 @@ public class MainActivity6 extends AppCompatActivity {
                                                 "name"
                                         );
 
+                                /*
+                                 * Department is optional.
+                                 *
+                                 * If you later add:
+                                 *
+                                 * department: "STME"
+                                 *
+                                 * to teacherDirectory, it will
+                                 * automatically be displayed.
+                                 */
+                                String department =
+                                        document.getString(
+                                                "department"
+                                        );
+
 
                                 if (code == null
                                         || name == null) {
@@ -331,7 +352,10 @@ public class MainActivity6 extends AppCompatActivity {
                                 teachers.add(
                                         new TeacherInfo(
                                                 code.trim(),
-                                                name.trim()
+                                                name.trim(),
+                                                department == null
+                                                        ? ""
+                                                        : department.trim()
                                         )
                                 );
                             }
@@ -349,15 +373,6 @@ public class MainActivity6 extends AppCompatActivity {
                             );
 
 
-                            /*
-                             * IMPORTANT:
-                             *
-                             * The adapter contains TeacherInfo objects,
-                             * NOT Strings.
-                             *
-                             * TeacherInfo.toString() controls what the
-                             * user sees in the dropdown.
-                             */
                             ArrayAdapter<TeacherInfo> adapter =
                                     new ArrayAdapter<>(
                                             MainActivity6.this,
@@ -412,12 +427,30 @@ public class MainActivity6 extends AppCompatActivity {
         );
 
 
-        teacherDepartmentText.setText(
-                getString(
-                        R.string.department_not_available
-                )
-        );
+        // --------------------------------------------------
+        // DEPARTMENT
+        // --------------------------------------------------
 
+        if (teacher.department != null
+                && !teacher.department.isEmpty()) {
+
+            teacherDepartmentText.setText(
+                    teacher.department
+            );
+
+        } else {
+
+            teacherDepartmentText.setText(
+                    getString(
+                            R.string.department_not_available
+                    )
+            );
+        }
+
+
+        // --------------------------------------------------
+        // INITIAL STATUS
+        // --------------------------------------------------
 
         currentStatusText.setText(
                 getString(
@@ -438,85 +471,13 @@ public class MainActivity6 extends AppCompatActivity {
         );
 
 
-        loadTeacherDepartment(
-                teacher
-        );
+        // --------------------------------------------------
+        // LOAD TODAY
+        // --------------------------------------------------
 
         loadTodaySchedule(
                 teacher
         );
-    }
-
-
-    // ======================================================
-    // LOAD DEPARTMENT
-    // ======================================================
-
-    private void loadTeacherDepartment(
-            TeacherInfo teacher
-    ) {
-
-        db.collection("users")
-                .whereEqualTo(
-                        "teacherCode",
-                        teacher.teacherCode
-                )
-                .whereEqualTo(
-                        "role",
-                        "TEACHER"
-                )
-                .limit(1)
-                .get()
-                .addOnSuccessListener(
-                        querySnapshot -> {
-
-                            if (querySnapshot.isEmpty()) {
-
-                                teacherDepartmentText.setText(
-                                        getString(
-                                                R.string.department_not_available
-                                        )
-                                );
-
-                                return;
-                            }
-
-
-                            String department =
-                                    querySnapshot
-                                            .getDocuments()
-                                            .get(0)
-                                            .getString(
-                                                    "department"
-                                            );
-
-
-                            if (department != null
-                                    && !department.trim()
-                                    .isEmpty()) {
-
-                                teacherDepartmentText.setText(
-                                        department.trim()
-                                );
-
-                            } else {
-
-                                teacherDepartmentText.setText(
-                                        getString(
-                                                R.string.department_not_available
-                                        )
-                                );
-                            }
-                        }
-                )
-                .addOnFailureListener(
-                        e ->
-                                teacherDepartmentText.setText(
-                                        getString(
-                                                R.string.department_not_available
-                                        )
-                                )
-                );
     }
 
 
@@ -538,14 +499,14 @@ public class MainActivity6 extends AppCompatActivity {
                 )
         );
 
-        teacherScheduleContainer.removeViews(
-                1,
-                Math.max(
-                        0,
-                        teacherScheduleContainer
-                                .getChildCount() - 1
-                )
-        );
+
+        while (teacherScheduleContainer
+                .getChildCount() > 1) {
+
+            teacherScheduleContainer.removeViewAt(
+                    1
+            );
+        }
 
 
         String today =
@@ -666,10 +627,6 @@ public class MainActivity6 extends AppCompatActivity {
             List<DocumentSnapshot> schedules
     ) {
 
-        /*
-         * Keep the loading TextView as the first child.
-         * Remove all dynamically generated schedule cards.
-         */
         while (teacherScheduleContainer
                 .getChildCount() > 1) {
 
@@ -976,12 +933,6 @@ public class MainActivity6 extends AppCompatActivity {
                     getStringValue(
                             current,
                             "room"
-                    );
-
-            String start =
-                    getStringValue(
-                            current,
-                            "startTime"
                     );
 
             String end =
@@ -1468,7 +1419,6 @@ public class MainActivity6 extends AppCompatActivity {
                         this
                 );
 
-
         view.setText(
                 text
         );
@@ -1501,14 +1451,12 @@ public class MainActivity6 extends AppCompatActivity {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
 
-
         params.setMargins(
                 0,
                 5,
                 0,
                 0
         );
-
 
         view.setLayoutParams(
                 params
@@ -1586,7 +1534,7 @@ public class MainActivity6 extends AppCompatActivity {
 
 
     // ======================================================
-    // TIME
+    // CURRENT TIME
     // ======================================================
 
     private int getCurrentMinutes() {
@@ -1603,6 +1551,10 @@ public class MainActivity6 extends AppCompatActivity {
         );
     }
 
+
+    // ======================================================
+    // CONVERT TIME TO MINUTES
+    // ======================================================
 
     private int convertTimeToMinutes(
             String time
@@ -1668,14 +1620,14 @@ public class MainActivity6 extends AppCompatActivity {
 
         try {
 
-            java.text.SimpleDateFormat input =
-                    new java.text.SimpleDateFormat(
+            SimpleDateFormat input =
+                    new SimpleDateFormat(
                             "HH:mm",
                             Locale.US
                     );
 
-            java.text.SimpleDateFormat output =
-                    new java.text.SimpleDateFormat(
+            SimpleDateFormat output =
+                    new SimpleDateFormat(
                             "hh:mm a",
                             Locale.US
                     );
@@ -1702,11 +1654,13 @@ public class MainActivity6 extends AppCompatActivity {
 
         String teacherCode;
         String name;
+        String department;
 
 
         TeacherInfo(
                 String teacherCode,
-                String name
+                String name,
+                String department
         ) {
 
             this.teacherCode =
@@ -1714,6 +1668,9 @@ public class MainActivity6 extends AppCompatActivity {
 
             this.name =
                     name;
+
+            this.department =
+                    department;
         }
 
 
