@@ -281,13 +281,6 @@ public class teacher_dashboard extends AppCompatActivity {
 
 
         // =====================================================
-        // LOAD REQUESTS
-        // =====================================================
-
-        loadStudentRequests();
-
-
-        // =====================================================
         // BUTTONS
         // =====================================================
 
@@ -472,6 +465,7 @@ public class teacher_dashboard extends AppCompatActivity {
                                  */
 
                                 loadTodaySchedule();
+                                loadStudentRequests();
 
                             } else {
 
@@ -1761,10 +1755,26 @@ public class teacher_dashboard extends AppCompatActivity {
 
     private void loadStudentRequests() {
 
+        if (teacherCode == null || teacherCode.trim().isEmpty()) {
+
+            showNoRequests();
+
+            return;
+        }
+
+        final String currentTeacherCode =
+                teacherCode.trim().toUpperCase(Locale.US);
+
+        android.util.Log.d(
+                "WIMT_REQUESTS",
+                "Loading requests for teacherCode = "
+                        + currentTeacherCode
+        );
+
         db.collection("meetingRequests")
                 .whereEqualTo(
-                        "teacherId",
-                        teacherUid
+                        "teacherCode",
+                        currentTeacherCode
                 )
                 .whereEqualTo(
                         "status",
@@ -1776,33 +1786,38 @@ public class teacher_dashboard extends AppCompatActivity {
 
                             requestContainer.removeAllViews();
 
+                            android.util.Log.d(
+                                    "WIMT_REQUESTS",
+                                    "Pending requests found = "
+                                            + querySnapshot.size()
+                            );
 
-                            if (
-                                    querySnapshot.isEmpty()
-                            ) {
+                            if (querySnapshot.isEmpty()) {
 
                                 showNoRequests();
 
                                 return;
                             }
 
-
                             for (
                                     DocumentSnapshot request :
-                                    querySnapshot
+                                    querySnapshot.getDocuments()
                             ) {
 
-                                loadRequestStudent(
-                                        request
-                                );
+                                addRequestCard(request);
                             }
                         }
                 )
                 .addOnFailureListener(
                         e -> {
 
-                            showNoRequests();
+                            android.util.Log.e(
+                                    "WIMT_REQUESTS",
+                                    "Could not load meeting requests",
+                                    e
+                            );
 
+                            showNoRequests();
 
                             Toast.makeText(
                                     this,
@@ -1818,102 +1833,49 @@ public class teacher_dashboard extends AppCompatActivity {
     // LOAD REQUEST STUDENT
     // =========================================================
 
-    private void loadRequestStudent(
-            DocumentSnapshot request
-    ) {
-
-        String studentId =
-                request.getString(
-                        "studentId"
-                );
-
-
-        if (
-                studentId == null ||
-                        studentId.isEmpty()
-        ) {
-
-            addRequestCard(
-                    request,
-                    "Student"
-            );
-
-            return;
-        }
-
-
-        db.collection("users")
-                .document(studentId)
-                .get()
-                .addOnSuccessListener(
-                        student -> {
-
-                            String studentName =
-                                    student.getString(
-                                            "name"
-                                    );
-
-
-                            if (
-                                    studentName == null ||
-                                            studentName.isEmpty()
-                            ) {
-
-                                studentName =
-                                        "Student";
-                            }
-
-
-                            addRequestCard(
-                                    request,
-                                    studentName
-                            );
-                        }
-                )
-                .addOnFailureListener(
-                        e -> {
-
-                            addRequestCard(
-                                    request,
-                                    "Student"
-                            );
-                        }
-                );
-    }
-
-
     // =========================================================
     // REQUEST CARD
     // =========================================================
 
+    private int dp(int value) {
+        return (int) (
+                value
+                        * getResources()
+                        .getDisplayMetrics()
+                        .density
+                        + 0.5f
+        );
+    }
+
+
     private void addRequestCard(
-            DocumentSnapshot request,
-            String studentName
+            DocumentSnapshot request
     ) {
 
-        LinearLayout card =
-                new LinearLayout(
-                        this
-                );
+        // IMPORTANT:
+        // Android LayoutParams use PIXELS, not dp.
+        // The previous request-card code used values such as 52
+        // directly, which made the Accept/Reject buttons only a
+        // few pixels high on a modern phone. That is why they
+        // appeared as thin blank bars.
 
+        LinearLayout card =
+                new LinearLayout(this);
 
         card.setOrientation(
                 LinearLayout.VERTICAL
         );
 
-
         card.setPadding(
-                20,
-                20,
-                20,
-                20
+                dp(18),
+                dp(18),
+                dp(18),
+                dp(18)
         );
-
 
         card.setBackgroundColor(
                 0xFFFFFFFF
         );
-
 
         LinearLayout.LayoutParams cardParams =
                 new LinearLayout.LayoutParams(
@@ -1921,58 +1883,82 @@ public class teacher_dashboard extends AppCompatActivity {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
 
-
         cardParams.setMargins(
                 0,
                 0,
                 0,
-                12
+                dp(14)
         );
 
-
-        card.setLayoutParams(
-                cardParams
-        );
+        card.setLayoutParams(cardParams);
 
 
         // =====================================================
         // STUDENT NAME
         // =====================================================
 
-        TextView name =
-                new TextView(
-                        this
+        String studentName =
+                getValue(
+                        request,
+                        "studentName",
+                        "Student"
                 );
 
+        TextView name =
+                new TextView(this);
 
-        name.setText(
-                studentName
-        );
-
-
-        name.setTextSize(
-                19
-        );
-
-
-        name.setTextColor(
-                0xFF222222
-        );
-
-
+        name.setText(studentName);
+        name.setTextSize(19);
+        name.setTextColor(0xFF222222);
         name.setTypeface(
                 null,
                 Typeface.BOLD
         );
 
-
-        card.addView(
-                name
-        );
+        card.addView(name);
 
 
         // =====================================================
-        // TIME
+        // EMAIL
+        // =====================================================
+
+        String studentEmail =
+                getValue(
+                        request,
+                        "studentEmail",
+                        ""
+                );
+
+        if (!studentEmail.isEmpty()) {
+
+            TextView email =
+                    new TextView(this);
+
+            email.setText(studentEmail);
+            email.setTextSize(14);
+            email.setTextColor(0xFF666666);
+
+            LinearLayout.LayoutParams emailParams =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+
+            emailParams.setMargins(
+                    0,
+                    dp(4),
+                    0,
+                    0
+            );
+
+            email.setLayoutParams(emailParams);
+
+            card.addView(email);
+        }
+
+
+        // =====================================================
+        // DATE + TIME
         // =====================================================
 
         String date =
@@ -1982,14 +1968,12 @@ public class teacher_dashboard extends AppCompatActivity {
                         ""
                 );
 
-
         String start =
                 getValue(
                         request,
                         "startTime",
                         ""
                 );
-
 
         String end =
                 getValue(
@@ -1998,31 +1982,19 @@ public class teacher_dashboard extends AppCompatActivity {
                         ""
                 );
 
-
         TextView time =
-                new TextView(
-                        this
-                );
-
+                new TextView(this);
 
         time.setText(
-                date +
-                        "  " +
-                        start +
-                        " - " +
-                        end
+                date
+                        + "    "
+                        + start
+                        + " - "
+                        + end
         );
 
-
-        time.setTextSize(
-                16
-        );
-
-
-        time.setTextColor(
-                0xFF444444
-        );
-
+        time.setTextSize(16);
+        time.setTextColor(0xFF444444);
 
         LinearLayout.LayoutParams timeParams =
                 new LinearLayout.LayoutParams(
@@ -2030,27 +2002,20 @@ public class teacher_dashboard extends AppCompatActivity {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
 
-
         timeParams.setMargins(
                 0,
-                8,
+                dp(10),
                 0,
                 0
         );
 
+        time.setLayoutParams(timeParams);
 
-        time.setLayoutParams(
-                timeParams
-        );
-
-
-        card.addView(
-                time
-        );
+        card.addView(time);
 
 
         // =====================================================
-        // SUBJECT
+        // MESSAGE / SUBJECT
         // =====================================================
 
         String subject =
@@ -2060,72 +2025,62 @@ public class teacher_dashboard extends AppCompatActivity {
                         ""
                 );
 
+        String message =
+                getValue(
+                        request,
+                        "message",
+                        ""
+                );
 
-        if (
-                !subject.isEmpty()
-        ) {
+        String displayMessage =
+                !message.isEmpty()
+                        ? message
+                        : subject;
 
-            TextView subjectText =
-                    new TextView(
-                            this
-                    );
+        if (!displayMessage.isEmpty()) {
 
+            TextView messageText =
+                    new TextView(this);
 
-            subjectText.setText(
-                    subject
+            messageText.setText(
+                    "Message: "
+                            + displayMessage
             );
 
+            messageText.setTextSize(15);
+            messageText.setTextColor(0xFF555555);
 
-            subjectText.setTextSize(
-                    16
-            );
-
-
-            subjectText.setTextColor(
-                    0xFF555555
-            );
-
-
-            LinearLayout.LayoutParams subjectParams =
+            LinearLayout.LayoutParams messageParams =
                     new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     );
 
-
-            subjectParams.setMargins(
+            messageParams.setMargins(
                     0,
-                    4,
+                    dp(10),
                     0,
                     0
             );
 
-
-            subjectText.setLayoutParams(
-                    subjectParams
+            messageText.setLayoutParams(
+                    messageParams
             );
 
-
-            card.addView(
-                    subjectText
-            );
+            card.addView(messageText);
         }
 
 
         // =====================================================
-        // BUTTONS
+        // ACCEPT / REJECT BUTTONS
         // =====================================================
 
         LinearLayout buttons =
-                new LinearLayout(
-                        this
-                );
-
+                new LinearLayout(this);
 
         buttons.setOrientation(
                 LinearLayout.HORIZONTAL
         );
-
 
         LinearLayout.LayoutParams buttonsParams =
                 new LinearLayout.LayoutParams(
@@ -2133,14 +2088,12 @@ public class teacher_dashboard extends AppCompatActivity {
                         LinearLayout.LayoutParams.WRAP_CONTENT
                 );
 
-
         buttonsParams.setMargins(
                 0,
-                18,
+                dp(18),
                 0,
                 0
         );
-
 
         buttons.setLayoutParams(
                 buttonsParams
@@ -2148,37 +2101,46 @@ public class teacher_dashboard extends AppCompatActivity {
 
 
         Button accept =
-                new Button(
-                        this
-                );
+                new Button(this);
 
-
-        accept.setText(
-                "Accept"
+        accept.setText("Accept");
+        accept.setTextSize(14);
+        accept.setTextColor(0xFFFFFFFF);
+        accept.setAllCaps(false);
+        accept.setMinHeight(0);
+        accept.setMinimumHeight(0);
+        accept.setPadding(
+                dp(8),
+                0,
+                dp(8),
+                0
         );
 
 
         Button reject =
-                new Button(
-                        this
-                );
+                new Button(this);
 
-
-        reject.setText(
-                "Reject"
+        reject.setText("Reject");
+        reject.setTextSize(14);
+        reject.setTextColor(0xFFFFFFFF);
+        reject.setAllCaps(false);
+        reject.setMinHeight(0);
+        reject.setMinimumHeight(0);
+        reject.setPadding(
+                dp(8),
+                0,
+                dp(8),
+                0
         );
 
 
         LinearLayout.LayoutParams acceptParams =
                 new LinearLayout.LayoutParams(
                         0,
-                        52
+                        dp(48)
                 );
 
-
-        acceptParams.weight =
-                1;
-
+        acceptParams.weight = 1;
 
         accept.setLayoutParams(
                 acceptParams
@@ -2188,75 +2150,49 @@ public class teacher_dashboard extends AppCompatActivity {
         LinearLayout.LayoutParams rejectParams =
                 new LinearLayout.LayoutParams(
                         0,
-                        52
+                        dp(48)
                 );
 
-
-        rejectParams.weight =
-                1;
-
+        rejectParams.weight = 1;
 
         rejectParams.setMargins(
-                12,
+                dp(12),
                 0,
                 0,
                 0
         );
-
 
         reject.setLayoutParams(
                 rejectParams
         );
 
 
-        buttons.addView(
-                accept
-        );
+        buttons.addView(accept);
+        buttons.addView(reject);
 
-
-        buttons.addView(
-                reject
-        );
-
-
-        card.addView(
-                buttons
-        );
+        card.addView(buttons);
 
 
         // =====================================================
-        // ACCEPT
+        // ACTIONS
         // =====================================================
 
         accept.setOnClickListener(
-                v -> {
-
-                    updateRequestStatus(
-                            request.getId(),
-                            "ACCEPTED"
-                    );
-                }
+                v -> showResponseDialog(
+                        request.getId(),
+                        "ACCEPTED"
+                )
         );
-
-
-        // =====================================================
-        // REJECT
-        // =====================================================
 
         reject.setOnClickListener(
-                v -> {
-
-                    updateRequestStatus(
-                            request.getId(),
-                            "REJECTED"
-                    );
-                }
+                v -> showResponseDialog(
+                        request.getId(),
+                        "REJECTED"
+                )
         );
 
 
-        requestContainer.addView(
-                card
-        );
+        requestContainer.addView(card);
     }
 
 
@@ -2264,28 +2200,165 @@ public class teacher_dashboard extends AppCompatActivity {
     // UPDATE REQUEST STATUS
     // =========================================================
 
-    private void updateRequestStatus(
+    private void showResponseDialog(
             String requestId,
             String status
     ) {
 
+        final android.widget.EditText input =
+                new android.widget.EditText(this);
+
+        input.setHint(
+                status.equals("ACCEPTED")
+                        ? "Message to student"
+                        : "Reason for rejection"
+        );
+
+        input.setSingleLine(false);
+        input.setMinLines(2);
+        input.setPadding(
+                20,
+                20,
+                20,
+                20
+        );
+
+
+        android.app.AlertDialog dialog =
+                new android.app.AlertDialog.Builder(this)
+                        .setTitle(
+                                status.equals("ACCEPTED")
+                                        ? "Accept Meeting Request"
+                                        : "Reject Meeting Request"
+                        )
+                        .setMessage(
+                                status.equals("ACCEPTED")
+                                        ? "Add a response message for the student."
+                                        : "Please provide a reason for rejecting the request."
+                        )
+                        .setView(input)
+                        .setNegativeButton(
+                                "Cancel",
+                                null
+                        )
+                        .setPositiveButton(
+                                status.equals("ACCEPTED")
+                                        ? "Accept"
+                                        : "Reject",
+                                null
+                        )
+                        .create();
+
+
+        dialog.setOnShowListener(
+                dialogInterface -> {
+
+                    Button positiveButton =
+                            dialog.getButton(
+                                    android.app.AlertDialog.BUTTON_POSITIVE
+                            );
+
+                    positiveButton.setOnClickListener(
+                            v -> {
+
+                                String response =
+                                        input.getText()
+                                                .toString()
+                                                .trim();
+
+                                if (response.isEmpty()) {
+
+                                    input.setError(
+                                            "Response message is required"
+                                    );
+
+                                    input.requestFocus();
+
+                                    return;
+                                }
+
+                                dialog.dismiss();
+
+                                updateRequestStatus(
+                                        requestId,
+                                        status,
+                                        response
+                                );
+                            }
+                    );
+                }
+        );
+
+
+        dialog.show();
+    }
+
+
+    private void updateRequestStatus(
+            String requestId,
+            String status,
+            String responseMessage
+    ) {
+
+        FirebaseUser currentUser =
+                auth.getCurrentUser();
+
+        if (currentUser == null) {
+
+            Toast.makeText(
+                    this,
+                    "Please login again.",
+                    Toast.LENGTH_SHORT
+            ).show();
+
+            return;
+        }
+
+
+        Map<String, Object> updates =
+                new HashMap<>();
+
+        updates.put(
+                "status",
+                status
+        );
+
+        updates.put(
+                "responseMessage",
+                responseMessage
+        );
+
+        updates.put(
+                "respondedAt",
+                com.google.firebase.firestore.FieldValue
+                        .serverTimestamp()
+        );
+
+        updates.put(
+                "respondedBy",
+                currentUser.getUid()
+        );
+
+        updates.put(
+                "updatedAt",
+                com.google.firebase.firestore.FieldValue
+                        .serverTimestamp()
+        );
+
+
         db.collection("meetingRequests")
                 .document(requestId)
-                .update(
-                        "status",
-                        status
-                )
+                .update(updates)
                 .addOnSuccessListener(
                         unused -> {
 
                             Toast.makeText(
                                     this,
-                                    "Request " +
-                                            status.toLowerCase() +
-                                            ".",
+                                    status.equals("ACCEPTED")
+                                            ? "Meeting request accepted."
+                                            : "Meeting request rejected.",
                                     Toast.LENGTH_SHORT
                             ).show();
-
 
                             loadStudentRequests();
                         }
@@ -2293,10 +2366,17 @@ public class teacher_dashboard extends AppCompatActivity {
                 .addOnFailureListener(
                         e -> {
 
+                            android.util.Log.e(
+                                    "WIMT_REQUESTS",
+                                    "Could not update meeting request",
+                                    e
+                            );
+
                             Toast.makeText(
                                     this,
-                                    "Could not update request.",
-                                    Toast.LENGTH_SHORT
+                                    "Could not update request: "
+                                            + e.getMessage(),
+                                    Toast.LENGTH_LONG
                             ).show();
                         }
                 );
@@ -2481,9 +2561,14 @@ public class teacher_dashboard extends AppCompatActivity {
 
         super.onResume();
 
-        if (teacherUid != null) {
+        if (teacherCode != null
+                && !teacherCode.trim().isEmpty()) {
 
             loadStudentRequests();
+
+        } else if (teacherUid != null) {
+
+            loadTeacherProfile();
         }
     }
 }
